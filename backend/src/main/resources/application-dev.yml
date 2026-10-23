@@ -1,0 +1,6 @@
+# Development profile: also loads the seed data in db/seed, so the
+# hello-world check (and later the demo cases) have data to show.
+# Seed data is never loaded outside this profile.
+spring:
+  flyway:
+    locations: classpath:db/migration,classpath:db/seed

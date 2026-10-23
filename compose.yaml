@@ -1,0 +1,97 @@
+# Development environment. Start everything with:  docker compose up --build
+# Values come from .env if it exists (copy .env.example), otherwise the defaults below.
+
+services:
+  # The system's own database
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: p3_project
+      POSTGRES_USER: ${DB_USER:-p3_project}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-p3_project}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-p3_project} -d p3_project"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Mock of Place2Book's internal database
+  place2book-db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: place2book
+      POSTGRES_USER: place2book
+      POSTGRES_PASSWORD: place2book
+    ports:
+      - "5433:5432"
+    volumes:
+      - place2book-data:/var/lib/postgresql
+      - ./mocks/place2book-db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U place2book -d place2book"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Mock email server: receives emails and shows them at http://localhost:8025
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web interface
+
+  backend:
+    build:
+      context: ./backend
+      target: dev
+    volumes:
+      - ./backend:/app
+      # Keep build output in the container (avoids root-owned target/ on the host)
+      - /app/target
+      # Cache downloaded Maven dependencies between restarts
+      - maven-repo:/root/.m2
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/p3_project
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-p3_project}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-p3_project}
+      PLACE2BOOK_DATASOURCE_URL: jdbc:postgresql://place2book-db:5432/place2book
+      PLACE2BOOK_DATASOURCE_USERNAME: p3_project_reader
+      PLACE2BOOK_DATASOURCE_PASSWORD: reader
+      SPRING_MAIL_HOST: mailhog
+      SPRING_MAIL_PORT: 1025
+      DANSKE_BANK_TRANSACTIONS_BASE_URL: ${DANSKE_BANK_TRANSACTIONS_BASE_URL:-https://mock-api.danskebank.com/mock/sandbox/1.6.0/account-transaction-and-balance-api/v1/account-transaction-service}
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      place2book-db:
+        condition: service_healthy
+      mailhog:
+        condition: service_started
+
+  frontend:
+    image: node:24-alpine
+    working_dir: /app
+    command: sh -c "npm ci && npm run dev"
+    environment:
+      VITE_API_PROXY_TARGET: http://backend:8080
+      VITE_USE_POLLING: ${VITE_USE_POLLING:-false}
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      # Keep the container's node_modules separate from the host's
+      - /app/node_modules
+    depends_on:
+      - backend
+
+volumes:
+  db-data:
+  place2book-data:
+  maven-repo:

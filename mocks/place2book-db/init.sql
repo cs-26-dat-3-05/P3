@@ -1,0 +1,1 @@
+-- Here the mock database is created and populated with some test data. This is used for testing purposes only.

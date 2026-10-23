@@ -1,0 +1,46 @@
+# Default configuration. Every value can be overridden with an environment
+# variable (e.g. SPRING_DATASOURCE_URL), which is how Docker Compose and a
+# later production setup configure the backend.
+
+spring:
+  application:
+    name: p3-project
+
+  # The system's own database
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/p3-project}
+    username: ${SPRING_DATASOURCE_USERNAME:p3-project}
+    password: ${SPRING_DATASOURCE_PASSWORD:p3-project}
+
+  flyway:
+    locations: classpath:db/migration
+
+  # SMTP server (MailHog in development). For a server that needs login,
+  # set SPRING_MAIL_USERNAME and SPRING_MAIL_PASSWORD as environment variables.
+  mail:
+    host: ${SPRING_MAIL_HOST:localhost}
+    port: ${SPRING_MAIL_PORT:1025}
+
+# Place2Book's internal database (read-only user)
+place2book:
+  datasource:
+    url: ${PLACE2BOOK_DATASOURCE_URL:jdbc:postgresql://localhost:5433/p3-project}
+    username: ${PLACE2BOOK_DATASOURCE_USERNAME:case_management_reader}
+    password: ${PLACE2BOOK_DATASOURCE_PASSWORD:reader}
+
+# Danske Bank. In development this points at the bank's mock service.
+danske-bank:
+  # TODO: Copy the exact base URL from the Danske Bank Developer Portal
+  # (Account Transaction & Balance API -> View Specification -> Mock Service).
+  transactions-base-url: ${DANSKE_BANK_TRANSACTIONS_BASE_URL:https://mock-api.danskebank.com/mock/sandbox/1.6.0/account-transaction-and-balance-api/v1/account-transaction-service}
+
+app:
+  mail:
+    from: ${APP_MAIL_FROM:no-reply@place2book.dk}
+    test-recipient: ${APP_MAIL_TEST_RECIPIENT:test@example.com}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
