@@ -79,4 +79,4 @@ i `application.yml` ikke passer til Compose-databasen, så du skal sætte
 **Kør frontenden uden for Docker.** Kør `npm install` og derefter `npm run dev` i `frontend/`.
 Den videresender `/api` til `http://localhost:8080`.
 
-
+(testbesked)

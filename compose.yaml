@@ -19,7 +19,7 @@ services:
       timeout: 3s
       retries: 10
 
-  # Mock of Place2Book's internal database
+  # Mock of Place2Book's internal database 
   place2book-db:
     image: postgres:18
     environment:
