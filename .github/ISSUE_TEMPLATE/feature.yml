@@ -1,0 +1,50 @@
+name: Feature / Task
+description: Propose a new feature, user story, or task
+title: "[Feature]: "
+labels: ["feature"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What should be done, and why?
+      placeholder: As a [user], I want [goal] so that [reason].
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: When is this done? Make each point testable.
+      value: |
+        - [ ] 
+        - [ ] 
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+
+  - type: dropdown
+    id: size
+    attributes:
+      label: Estimated size
+      options:
+        - Small (< 2 hours)
+        - Medium (half a day)
+        - Large (1+ days, consider splitting)
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional notes
+      description: Mockups, links, dependencies on other issues, etc.
