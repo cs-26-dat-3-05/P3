@@ -1,0 +1,16 @@
+name: Main source check
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, edited]
+
+jobs:
+  require-development:
+    name: require-development
+    runs-on: ubuntu-latest
+    steps:
+      - name: Only allow PRs from development
+        if: github.head_ref != 'development' || github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "::error::PRs into main must come from the 'development' branch of this repository."
+          exit 1
