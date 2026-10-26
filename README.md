@@ -3,12 +3,12 @@
 ## Forudsætninger
 
 - Du skal kun bruge [Docker Desktop](https://www.docker.com/products/docker-desktop/) (indeholder Docker Compose).
-  
 - Hvis du vil udvikle udenfor Docker: Java 25, Maven 3.9 og Node.js 24.
 
 ## Opstart
 
 1. Klon repository
+
    ```bash
    git clone git@github.com:cs-26-dat-3-05/P3.git
    ```
@@ -21,18 +21,17 @@
 
 3. Tjek at alt kører:
 
-   | Hvad | Hvor | Forventet |
-   |---|---|---|
-   | Frontend | <http://localhost:5173> | Hello world |
+   | Hvad             | Hvor                                    | Forventet                |
+   | ---------------- | --------------------------------------- | ------------------------ |
+   | Frontend         | <http://localhost:5173>                 | Hello world              |
    | Backend (Spring) | <http://localhost:8080/actuator/health> | JSON med `"status":"UP"` |
-   | Swagger UI | <http://localhost:8080/swagger-ui.html> | API-dokumentation (tom) |
-   | MailHog | <http://localhost:8025> | Indbakke for mails (tom) |
+   | Swagger UI       | <http://localhost:8080/swagger-ui.html> | API-dokumentation (tom)  |
+   | MailHog          | <http://localhost:8025>                 | Indbakke for mails (tom) |
 
 4. Stop docker med `Ctrl+C`, eller `docker compose down` hvis det kører i baggrunden.
 
 En `.env`-fil er ikke nødvendig, da alle værdier har standardværdier i `compose.yaml`. Se
 [Konfiguration](#konfiguration), hvis du vil ændre dem.
-
 
 ## Generel udvikling
 
@@ -79,4 +78,4 @@ i `application.yml` ikke passer til Compose-databasen, så du skal sætte
 **Kør frontenden uden for Docker.** Kør `npm install` og derefter `npm run dev` i `frontend/`.
 Den videresender `/api` til `http://localhost:8080`.
 
-
+(testbesked)
