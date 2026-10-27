@@ -79,3 +79,4 @@ i `application.yml` ikke passer til Compose-databasen, så du skal sætte
 Den videresender `/api` til `http://localhost:8080`.
 
 (testbesked)
+dfælsdfældskfdsklæ
