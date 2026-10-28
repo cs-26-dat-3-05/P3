@@ -7,6 +7,8 @@ public class Organizer {
     private String email;
     private String phoneNumber;
     private String cvr;
+    private String accMain; // Konto nr.
+    private String accPrefix; // Reg nr.
 
     public Organizer() {
     }
@@ -49,5 +51,21 @@ public class Organizer {
 
     public void setCvr(String cvr) {
         this.cvr = cvr;
+    }
+
+    public String getAccMain() {
+        return accMain;
+    }
+
+    public void setAccMain(String accMain) {
+        this.accMain = accMain;
+    }
+
+    public String getAccPrefix() {
+        return accPrefix;
+    }
+
+    public void setAccPrefix(String accPrefix) {
+        this.accPrefix = accPrefix;
     }
 }
