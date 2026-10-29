@@ -66,3 +66,18 @@ psql -h localhost -p 5433 -U p3_project_reader place2book     # password: reader
 ```
 
 Place2Book-databasen (port 5433) er en mock af Place2Books interne database, som vi kun må læse fra. Brug derfor altid read-only-brugeren `p3_project_reader` (password: `reader`), både i backenden og når du forbinder manuelt. Brugeren kan kun lave `SELECT`, så man ikke ved et uheld kommer til at ændre data.
+
+### Unit Tests (Backend)
+
+Når docker containeren kører, kan man bruge:
+```bash
+docker exec p3-backend-1 mvn test
+```
+
+Tests ligger i `backend/src/test/java/`, og et eksempel findes i `ExampleUnitTest.java`. 
+
+Man kan læse yderligere dokumentation om tests her:
+- [JUnit User Guide](https://docs.junit.org/current/user-guide/): sådan skrives tests (`@Test`, `assertThrows`, `@ParameterizedTest` m.m.)
+- [AssertJ](https://assertj.github.io/doc/): `assertThat(...)`-assertions
+- [Spring Boot: Testing](https://docs.spring.io/spring-boot/reference/testing/index.html): test af Spring-kode (til senere)
+
