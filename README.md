@@ -56,24 +56,16 @@ docker compose down -v
 docker compose up --build
 ```
 
-**Tilføj en databasemigration.** Opret en fil i `backend/src/main/resources/db/migration/`
-med navnet `V2__beskriv_aendringen.sql`, derefter `V3__...` og så videre. Ret aldrig i en
-migration, der allerede er merget. Flyway nægter at starte, hvis en migration, der allerede
-er kørt, er blevet ændret. Lav i stedet en ny migration.
+**Tilføj en databasemigration.** Opret en fil i `backend/src/main/resources/db/migration/` med navnet `V2__beskriv_aendringen.sql`, derefter `V3__...` og så videre. Ret aldrig i en migration, der allerede er merget. Flyway nægter at starte, hvis en migration, der allerede er kørt, er blevet ændret. Lav i stedet en ny migration.
 
 **Forbind til en database** med f.eks. DBeaver, IntelliJ eller `psql`:
 
 ```bash
-psql -h localhost -p 5432 -U p3_project p3_project     # password: p3_project
-psql -h localhost -p 5433 -U place2book place2book     # password: place2book
+psql -h localhost -p 5432 -U p3_project p3_project     # password: p3_project (dette er spring databasen)
+psql -h localhost -p 5433 -U p3_project_reader place2book     # password: reader (dette er den interne database)
 ```
 
-**Kør backenden uden for Docker.** Start de andre tjenester med
-`docker compose up db place2book-db mailhog`, og kør backenden fra din IDE eller med
-`mvn spring-boot:run -Dspring-boot.run.profiles=dev` i `backend/`. Bemærk, at standardværdierne
-i `application.yml` ikke passer til Compose-databasen, så du skal sætte
-`SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/p3_project` samt brugernavn og kodeord
-(`p3_project`) som miljøvariabler.
+Place2Book-databasen (port 5433) er en mock af Place2Books interne database, som vi kun må læse fra. Brug derfor altid read-only-brugeren `p3_project_reader` (password: `reader`), både i backenden og når du forbinder manuelt. Brugeren kan kun lave `SELECT`, så man ikke ved et uheld kommer til at ændre data.
 
 ### Unit Tests (Backend)
 
@@ -89,5 +81,3 @@ Man kan læse yderligere dokumentation om tests her:
 - [AssertJ](https://assertj.github.io/doc/): `assertThat(...)`-assertions
 - [Spring Boot: Testing](https://docs.spring.io/spring-boot/reference/testing/index.html): test af Spring-kode (til senere)
 
-**Kør frontenden uden for Docker.** Kør `npm install` og derefter `npm run dev` i `frontend/`.
-Den videresender `/api` til `http://localhost:8080`.
