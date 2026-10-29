@@ -75,8 +75,19 @@ i `application.yml` ikke passer til Compose-databasen, så du skal sætte
 `SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/p3_project` samt brugernavn og kodeord
 (`p3_project`) som miljøvariabler.
 
+### Unit Tests (Backend)
+
+Når docker containeren kører, kan man bruge:
+```bash
+docker exec p3-backend-1 mvn test
+```
+
+Tests ligger i `backend/src/test/java/`, og et eksempel findes i `ExampleUnitTest.java`. 
+
+Man kan læse yderligere dokumentation om tests her:
+- [JUnit User Guide](https://docs.junit.org/current/user-guide/): sådan skrives tests (`@Test`, `assertThrows`, `@ParameterizedTest` m.m.)
+- [AssertJ](https://assertj.github.io/doc/): `assertThat(...)`-assertions
+- [Spring Boot: Testing](https://docs.spring.io/spring-boot/reference/testing/index.html): test af Spring-kode (til senere)
+
 **Kør frontenden uden for Docker.** Kør `npm install` og derefter `npm run dev` i `frontend/`.
 Den videresender `/api` til `http://localhost:8080`.
-
-(testbesked)
-dfælsdfældskfdsklæ
