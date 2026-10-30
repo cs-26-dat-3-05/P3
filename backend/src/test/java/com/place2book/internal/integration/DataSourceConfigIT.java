@@ -1,15 +1,20 @@
-package com.place2book.internal;
+package com.place2book.internal.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
+import com.place2book.internal.Main;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
-@SpringBootTest
-class DataSourceConfigTest {
+/**
+ * Integration test: needs both databases running (docker compose up db place2book-db).
+ * Runs with `mvn verify`, not `mvn test`.
+ */
+@SpringBootTest(classes = Main.class)
+class DataSourceConfigIT {
 
     /* Our own database doesn't need any @Qualifer annotation */
     @Autowired
