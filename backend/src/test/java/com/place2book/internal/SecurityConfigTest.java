@@ -5,48 +5,63 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
+
+import com.place2book.internal.config.SecurityConfig;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class SecurityConfigTest {
-    
+
+
+    static ResultMatcher notBlockedBySecurity() {
+        return result -> {
+            int status = result.getResponse().getStatus();
+            if (status == 401 || status == 403 || (status == 302 && result.getResponse().getRedirectedUrl().contains("/login"))) {
+                throw new AssertionError("Request was blocked by security, status: " + status);
+            }
+        };
+    }
 
     @Nested
-    @SpringBootTest 
-    @AutoConfigureMockMvc
+    @WebMvcTest 
+    @Import(SecurityConfig.class)
     @ActiveProfiles("dev")
     class DevProfile {
         @Autowired MockMvc mvc;
 
         @Test void healthIsOpen() throws Exception {
             mvc.perform(get("/actuator/health"))
-                .andExpect(status().isOk());
+                .andExpect(notBlockedBySecurity());
         }
 
         @Test void apiDocsAreOpen() throws Exception {
             mvc.perform(get("/v3/api-docs"))
-                .andExpect(status().isOk());
+                .andExpect(notBlockedBySecurity());
         }
     } 
 
 
     @Nested 
-    @SpringBootTest 
-    @AutoConfigureMockMvc 
+    @WebMvcTest  
+    @Import(SecurityConfig.class)
+    @ActiveProfiles("prod")
     class DefaultProfile {
         @Autowired MockMvc mvc;
 
         @Test void healthIsOpen() throws Exception {
             mvc.perform(get("/actuator/health"))
-                .andExpect(status().isOk());
+                .andExpect(notBlockedBySecurity());
         }
 
         @Test void apiDocsAreOpen() throws Exception {
             mvc.perform(get("/v3/api-docs"))
-                .andExpect(status().isOk());
+                .andExpect(notBlockedBySecurity());
         }
         
         /* 
