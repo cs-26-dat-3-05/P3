@@ -5,6 +5,9 @@
 spring:
   application:
     name: p3-project
+  mvc:
+    problemdetails:
+      enabled: true
 
   # The system's own database
   datasource:
