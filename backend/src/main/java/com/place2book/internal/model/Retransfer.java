@@ -10,7 +10,7 @@ public class Retransfer {
     private BigDecimal amount;
     private String accPrefix; // The new reg.nr.
     private String accMain; // The new account number.
-    private LocalDateTime retransferredAt;
+    private LocalDateTime createdAt;
 
     public Retransfer() {
     }
@@ -55,11 +55,11 @@ public class Retransfer {
         this.accMain = accMain;
     }
 
-    public LocalDateTime getRetransferredAt() {
-        return retransferredAt;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setRetransferredAt(LocalDateTime retransferredAt) {
-        this.retransferredAt = retransferredAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
