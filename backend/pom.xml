@@ -29,6 +29,13 @@
             <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
 
+        <!-- For testing -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Bean Validation for DTOs -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
