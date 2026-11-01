@@ -1,0 +1,15 @@
+CREATE TABLE Notes{
+    Note_ID SERIAL PRIMARY KEY,
+    Case_ID VARCHAR(30) FOREIGN KEY,
+    User_ID SMALLINT FOREIGN KEY,
+    Context TEXT,
+    Timestamp TIMESTAMPTZ,
+}
+
+
+
+
+
+
+
+
