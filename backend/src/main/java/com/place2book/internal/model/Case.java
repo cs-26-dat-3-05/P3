@@ -1,11 +1,14 @@
 package com.place2book.internal.model;
 
+import java.time.LocalDateTime;
+
 public class Case {
 
     private Long id;
     private CaseStatus status;
     private Long organizerId;
     private Long rejectedPayoutId;
+    private LocalDateTime createdAt;
 
     public Case() {
 
@@ -41,5 +44,13 @@ public class Case {
 
     public void setRejectedPayoutId(Long rejectedPayoutId) {
         this.rejectedPayoutId = rejectedPayoutId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

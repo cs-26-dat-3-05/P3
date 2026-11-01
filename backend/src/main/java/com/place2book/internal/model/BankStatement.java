@@ -9,7 +9,7 @@ public class BankStatement {
     private BigDecimal amount;
     private String accMain; // Konto nr.
     private String accPrefix; // Reg nr.
-    private LocalDateTime importedAt;
+    private LocalDateTime createdAt;
 
     public BankStatement() {
     }
@@ -46,11 +46,11 @@ public class BankStatement {
         this.accPrefix = accPrefix;
     }
 
-    public LocalDateTime getImportedAt() {
-        return importedAt;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setImportedAt(LocalDateTime importedAt) {
-        this.importedAt = importedAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
