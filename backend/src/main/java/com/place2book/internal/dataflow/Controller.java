@@ -32,7 +32,7 @@ public class Controller {
 
     @GetMapping("")
     public ArrayList<Note> allNotes(){
-        return noteRepo.findAll();
+        return noteRepo.getNoteList();
     }
 
     @GetMapping("/{id}")

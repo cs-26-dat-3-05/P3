@@ -20,10 +20,6 @@ public class ExampleNoteRepository {
             Notes.add(tmpNote);
         }
     }
-
-    public ArrayList<Note> findAll(){
-        return Notes;
-    }
     
     public Optional<Note> findByID(int id){
         for(int j=0; j<Notes.size(); j++){
@@ -56,6 +52,10 @@ public class ExampleNoteRepository {
             Optional<Note> OptionalNewNote = Optional.empty();
             return OptionalNewNote;
         }
+    }
+
+    public ArrayList<Note> getNoteList(){
+        return Notes;
     }
     
 }
