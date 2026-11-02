@@ -1,5 +1,6 @@
 --Seed file, manually inserting data instead of backend to test it works--
--- Same order tables are made as in DB file, because references must be already be stored--
+-- Same order as in tables v1 db, because references must be stored first--
+-- Order:
 /*
     1.Transaction
     2.Organizer
