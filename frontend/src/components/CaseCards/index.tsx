@@ -1,4 +1,4 @@
-import { Container, TableCard } from "./style";
+import { Container, Card, CardHeader, CardTable, TdRight } from "./style";
 
 interface CardRow {
   label: string;
@@ -9,7 +9,7 @@ interface CardRow {
 interface CardData {
   id: string;
   title: string;
-  width: string;
+  span: number;
   rows: CardRow[];
 }
 
@@ -17,9 +17,9 @@ const MOCK_CASE_CARDS: CardData[] = [
   {
     id: "case",
     title: "Sag",
-    width: "25%",
+    span: 1,
     rows: [
-      { label: "OPRETTET", id: "cretedAt", value: "18.06.2025" },
+      { label: "OPRETTET", id: "createdAt", value: "18.06.2025" },
       { label: "ARRANGØR-ID", id: "organizerId", value: "EM12345" },
       { label: "EVENT-ID", id: "eventId", value: "F12345" },
     ],
@@ -27,7 +27,7 @@ const MOCK_CASE_CARDS: CardData[] = [
   {
     id: "payment",
     title: "Betaling",
-    width: "50%",
+    span: 2,
     rows: [
       { label: "BELØB", id: "amount", value: "DKK 48.520,00" },
       {
@@ -46,7 +46,7 @@ const MOCK_CASE_CARDS: CardData[] = [
   {
     id: "organizer",
     title: "Arrangør",
-    width: "25%",
+    span: 1,
     rows: [
       { label: "KONTAKTPERSON", id: "contactPerson", value: "METTE JENSEN" },
       { label: "E-MAIL", id: "mail", value: "METTE@AALBORG.DK" },
@@ -56,24 +56,26 @@ const MOCK_CASE_CARDS: CardData[] = [
 ];
 
 export default function CaseCards() {
+  const columns = MOCK_CASE_CARDS.map(
+    (card) => `minmax(0, ${card.span}fr)`,
+  ).join(" "); // => `minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr)`
+
   return (
-    <Container>
+    <Container $columns={columns}>
       {MOCK_CASE_CARDS.map((card) => (
-        <TableCard key={card.id} $width={card.width}>
-          <thead>
-            <tr>
-              <th colSpan={2}>Sag</th>
-            </tr>
-          </thead>
-          <tbody>
-            {card.rows.map((row, index) => (
-              <tr key={index}>
-                <td>{row.label}</td>
-                <td align="right">{row.value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </TableCard>
+        <Card key={card.id}>
+          <CardHeader>{card.title}</CardHeader>
+          <CardTable>
+            <tbody>
+              {card.rows.map((row) => (
+                <tr key={row.id}>
+                  <td>{row.label}</td>
+                  <TdRight align="right">{row.value}</TdRight>
+                </tr>
+              ))}
+            </tbody>
+          </CardTable>
+        </Card>
       ))}
     </Container>
   );
