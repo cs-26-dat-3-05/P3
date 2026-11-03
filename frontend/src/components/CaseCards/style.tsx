@@ -18,7 +18,7 @@ export const Card = styled.div.attrs({ className: "box" })`
 
 export const CardHeader = styled.div`
   background-color: #e4e1d9;
-  padding: 8px;
+  padding: 14px;
   text-transform: uppercase;
   font-size: 14px;
   font-weight: bold;
@@ -34,7 +34,7 @@ export const CardTable = styled.table`
   td {
     padding: 14px;
     font-size: 14px;
-    border-bottom: 1px dashed #dcdcdc;
+    border-bottom: 2px dashed #dcdcdc;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

@@ -36,6 +36,7 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
     background-color: var(--background-color);
     font-family: var(--font-main);
+    box-sizing: border-box;
   }
   .box {
     background-color: var(--paper);
