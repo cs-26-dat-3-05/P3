@@ -7,12 +7,12 @@ type KpiCardProps = {
 }
 const Label = styled.p`
     margin: 0;
-    font-size: 12px;
+    font-size: 24px;
 `;
 
 const Value = styled.p`
     margin: 8px 0 0;
-    font-size: 24px;
+    font-size: 22px;
 `;
 
 const Card = styled.div.attrs({ className: "box"})<{ $highlighted?: boolean }>`
