@@ -12,9 +12,11 @@ import { createGlobalStyle } from "styled-components";
  *
  * Global klasse på styled-component:
  *   const Card = styled.div.attrs({ className: "box" })`...`;
+ * 
+ * Side wrapper med padding
+ *   <main className="page">...</main>
  *
- *
- * Klasser: box
+ * Klasser: box, page
  */
 
 const GlobalStyles = createGlobalStyle`
@@ -43,6 +45,9 @@ const GlobalStyles = createGlobalStyle`
     border: var(--border);
     box-shadow: var(--shadow);
     padding: 8px;
+  }
+  .page {
+    padding: 50px;
   }
 `;
 export default GlobalStyles;
