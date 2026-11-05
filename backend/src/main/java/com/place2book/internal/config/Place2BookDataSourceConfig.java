@@ -22,4 +22,14 @@ public class Place2BookDataSourceConfig {
     public DataSource place2bookDataSource() {
         return DataSourceBuilder.create().build();
     }
+    
+    
+    /**
+      The JdbcClient bean which has the place2book config
+    */   
+    @Bean(defaultCandidate = false)
+    @Qualifier("place2book")
+    JdbcClient place2bookJdbcClient(@Qualifier("place2book") DataSource dataSource) {
+        return JdbcClient.create(dataSource);
+    }
 }
