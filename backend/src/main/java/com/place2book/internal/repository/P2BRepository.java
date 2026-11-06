@@ -1,5 +1,7 @@
 package com.place2book.internal.repository;
 
+import java.util.Optional;
+
 import com.place2book.internal.model.Organizer;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,10 +16,10 @@ public class P2BRepository {
         this.jdbc = jdbc;
     }
     
-    public Organizer findOrganizerById(int id) {
+    public Optional<Organizer> findOrganizerById(int id) {
         return jdbc.sql("SELECT id, name, cvr, email, phone FROM organizer WHERE id = ?")
             .param(id)
             .query(Organizer.class)
-            .single();
+            .optional();
     }
 }
