@@ -25,3 +25,61 @@ jobs:
 
       - name: Run tests
         run: mvn -B test
+
+  integration-test:
+    name: integration-test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    services:
+      # Our database from application.yml
+      db:
+        image: postgres:18
+        env:
+          POSTGRES_DB: p3_project
+          POSTGRES_USER: p3_project
+          POSTGRES_PASSWORD: p3_project
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U p3_project -d p3_project"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+      # Place2Books database
+      place2book-db:
+        image: postgres:18
+        env:
+          POSTGRES_DB: place2book
+          POSTGRES_USER: place2book
+          POSTGRES_PASSWORD: place2book
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U place2book -d place2book"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Load Place2Book mock data
+        working-directory: .
+        env:
+          PGPASSWORD: place2book
+        # If init.sql contains errors it will stop instead of being ignored
+        run: >-
+          psql -h localhost -p 5433 -U place2book -d place2book
+          -v ON_ERROR_STOP=1 -f mocks/place2book-db/init.sql
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "25"
+          cache: maven
+          cache-dependency-path: backend/pom.xml
+
+      - name: Run unit and integration tests
+        run: mvn -B verify

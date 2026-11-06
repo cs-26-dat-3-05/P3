@@ -12,9 +12,11 @@ import { createGlobalStyle } from "styled-components";
  *
  * Global klasse på styled-component:
  *   const Card = styled.div.attrs({ className: "box" })`...`;
+ * 
+ * Side wrapper med padding
+ *   <main className="page">...</main>
  *
- *
- * Klasser: box
+ * Klasser: box, page
  */
 
 const GlobalStyles = createGlobalStyle`
@@ -32,16 +34,20 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    margin: 0;
+    margin: 0 2rem;
     padding: 0;
     background-color: var(--background-color);
     font-family: var(--font-main);
+    box-sizing: border-box;
   }
   .box {
     background-color: var(--paper);
     border: var(--border);
     box-shadow: var(--shadow);
     padding: 8px;
+  }
+  .page {
+    padding: 50px;
   }
 `;
 export default GlobalStyles;

@@ -1,18 +1,19 @@
-import { useState } from "react";
 import styled from "styled-components";
+import Header from "./components/Header";
+import KpiCard from "./components/KpiCard";
 const Heading = styled.h1`
   color: var(--primary-color);
 `;
+import CaseCards from "./components/CaseCards";
 
-// Box placeholder
-const Card = styled.div.attrs({ className: "box" })`
-  width: 300px;
-`;
 export default function App() {
   return (
+    <>
+    <Header />
     <main className="page">
       <Heading>Aktive sager</Heading>
-      <Card>Box test</Card>
+      <CaseCards></CaseCards>
     </main>
+    </>
   );
 }
