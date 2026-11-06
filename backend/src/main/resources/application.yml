@@ -27,7 +27,7 @@ spring:
 # Place2Book's internal database (read-only user)
 place2book:
   datasource:
-    url: ${PLACE2BOOK_DATASOURCE_URL:jdbc:postgresql://localhost:5433/place2book}
+    jdbc-url: ${PLACE2BOOK_DATASOURCE_URL:jdbc:postgresql://localhost:5433/place2book}
     username: ${PLACE2BOOK_DATASOURCE_USERNAME:p3_project_reader}
     password: ${PLACE2BOOK_DATASOURCE_PASSWORD:reader}
 
