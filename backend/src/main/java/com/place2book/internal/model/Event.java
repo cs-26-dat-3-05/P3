@@ -7,7 +7,11 @@ public class Event {
     private Long organizerId;
     private String name;
 
-    public Event() {
+    public Event(Long id, Long bankAccountId, Long organizerId, String name) {
+        this.id = id;
+        this.bankAccountId = bankAccountId;
+        this.organizerId = organizerId;
+        this.name = name;
     }
 
     public Long getId() {

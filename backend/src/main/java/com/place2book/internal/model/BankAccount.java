@@ -9,7 +9,14 @@ public class BankAccount {
     private boolean eventDefault; // Konto for nye events
     private boolean active;
 
-    public BankAccount() {
+    public BankAccount(Long id, Long organizerId, String accPrefix, String accMain, boolean eventDefault,
+            boolean active) {
+        this.id = id;
+        this.organizerId = organizerId;
+        this.accPrefix = accPrefix;
+        this.accMain = accMain;
+        this.eventDefault = eventDefault;
+        this.active = active;
     }
 
     public Long getId() {

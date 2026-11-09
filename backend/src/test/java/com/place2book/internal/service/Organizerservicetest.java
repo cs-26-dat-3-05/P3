@@ -42,17 +42,9 @@ class OrganizerServiceTest {
         organizer.setPhone("12345678");
         organizer.setCvr("87654321");
 
-        BankAccount account = new BankAccount();
-        account.setId(1L);
-        account.setAccPrefix("1234");
-        account.setAccMain("5678901234");
-        account.setEventDefault(true);
-        account.setActive(true);
+        BankAccount account = new BankAccount(1L, 1L, "1234", "5678901234", true, true);
 
-        Event event = new Event();
-        event.setId(7L);
-        event.setName("Koncert");
-        event.setBankAccountId(1L);
+        Event event = new Event(7L, 1L, 1L, "Koncert");
 
         when(place2BookClient.getOrganizer(42L)).thenReturn(Optional.of(organizer));
         when(place2BookClient.getBankAccounts(42L)).thenReturn(List.of(account));
