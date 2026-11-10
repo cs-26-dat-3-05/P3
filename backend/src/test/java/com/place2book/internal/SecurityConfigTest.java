@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 import com.place2book.internal.config.SecurityConfig;
 import com.place2book.internal.service.CaseService;
+import com.place2book.internal.service.OrganizerService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -37,6 +38,7 @@ class SecurityConfigTest {
     class DevProfile {
         @Autowired MockMvc mvc;
         @MockitoBean CaseService caseService;
+        @MockitoBean OrganizerService organizerService;
 
         @Test void healthIsOpen() throws Exception {
             mvc.perform(get("/actuator/health"))
@@ -62,6 +64,7 @@ class SecurityConfigTest {
     class DefaultProfile {
         @Autowired MockMvc mvc;
         @MockitoBean CaseService caseService;
+        @MockitoBean OrganizerService organizerService;
 
         @Test void healthIsOpen() throws Exception {
             mvc.perform(get("/actuator/health"))
