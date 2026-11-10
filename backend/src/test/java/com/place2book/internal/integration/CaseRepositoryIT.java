@@ -125,7 +125,7 @@ class CaseRepositoryIT {
         assertThat(history).extracting(CaseLog::getStatus)
             .containsExactly(CaseStatus.REGISTERED, CaseStatus.ORGANIZER_IDENTIFIED);
         assertThat(history).extracting(CaseLog::getPerformedBy)
-            .containsExactly("Anders", null);
+            .containsExactly("Anders", "Anton");
         assertThat(history).allSatisfy(entry -> {
             assertThat(entry.getId()).isNotNull();
             assertThat(entry.getCreatedAt()).isNotNull();
