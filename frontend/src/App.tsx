@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Header from "./components/Header";
 import KpiCard from "./components/KpiCard";
+import Sagsoversigt from "./components/Sagsoversigt/Sagsoversigt";
 const Heading = styled.h1`
   color: var(--primary-color);
 `;
@@ -13,6 +14,7 @@ export default function App() {
     <main className="page">
       <Heading>Aktive sager</Heading>
       <CaseCards></CaseCards>
+      <Sagsoversigt />
     </main>
     </>
   );
