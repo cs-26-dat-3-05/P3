@@ -8,10 +8,13 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import com.place2book.internal.config.SecurityConfig;
+import com.place2book.internal.service.CaseService;
+import com.place2book.internal.service.OrganizerService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,6 +37,8 @@ class SecurityConfigTest {
     @ActiveProfiles("dev")
     class DevProfile {
         @Autowired MockMvc mvc;
+        @MockitoBean CaseService caseService;
+        @MockitoBean OrganizerService organizerService;
 
         @Test void healthIsOpen() throws Exception {
             mvc.perform(get("/actuator/health"))
@@ -42,6 +47,11 @@ class SecurityConfigTest {
 
         @Test void apiDocsAreOpen() throws Exception {
             mvc.perform(get("/v3/api-docs"))
+                .andExpect(notBlockedBySecurity());
+        }
+
+        @Test void apiIsOpen() throws Exception {
+            mvc.perform(get("/api/cases"))
                 .andExpect(notBlockedBySecurity());
         }
     } 
@@ -53,6 +63,8 @@ class SecurityConfigTest {
     @ActiveProfiles("prod")
     class DefaultProfile {
         @Autowired MockMvc mvc;
+        @MockitoBean CaseService caseService;
+        @MockitoBean OrganizerService organizerService;
 
         @Test void healthIsOpen() throws Exception {
             mvc.perform(get("/actuator/health"))
@@ -64,13 +76,9 @@ class SecurityConfigTest {
                 .andExpect(notBlockedBySecurity());
         }
         
-        /* 
-        We dont have any endpoints yet, so i can't test this
-        TODO: add test for endpoints 
-            @Test void apiRequiresAuthentication() throws Exception {
-            mvc.perform(get("/api/random-endpoint"))
+        @Test void apiRequiresAuthentication() throws Exception {
+            mvc.perform(get("/api/cases"))
                 .andExpect(status().is3xxRedirection());
         }
-        */
     }
 }
