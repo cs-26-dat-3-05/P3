@@ -24,7 +24,7 @@ const Card = styled.div.attrs({ className: "box" })<{ $highlighted?: boolean }>`
   ${({ $highlighted }) =>
     $highlighted &&
     `
-            background: repeating-linear-gradient(-45deg, var(--background-color) 0px, var(--background-color) 8px, #ddd 8px, #ddd 9px);
+            background: var(--background-gradient)
         `}
 `;
 

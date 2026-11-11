@@ -12,7 +12,7 @@ import { createGlobalStyle } from "styled-components";
  *
  * Global klasse på styled-component:
  *   const Card = styled.div.attrs({ className: "box" })`...`;
- * 
+ *
  * Side wrapper med padding
  *   <main className="page">...</main>
  *
@@ -31,6 +31,8 @@ const GlobalStyles = createGlobalStyle`
     --border-sm: 1.5px solid var(--primary-color);
     --shadow: 4px 4px 0 var(--ink-shadow);
     --shadow-sm: 2px 2px 0 var(--ink-shadow);
+
+    --background-gradient: repeating-linear-gradient(-45deg, var(--background-color) 0px, var(--background-color) 8px, #ddd 8px, #ddd 9px);
   }
 
   body {
