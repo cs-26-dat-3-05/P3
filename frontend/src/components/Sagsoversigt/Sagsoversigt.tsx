@@ -17,6 +17,14 @@ const CASES: CaseItem[] = [
   { id: "RP-10XX", organizer: "Musikkens Hus", amount: "DKK XX.XXX", status: "Afsluttet", progress: 6, step: "Udbetaling genindsendt", note: "Reg.nr. verificeret", created: "10. JUNI" },
   { id: "RP-10XX", organizer: "Studenterhuset Aalborg", amount: "DKK XX.XXX", status: "Kræver opmærksomhed", progress: 2, step: "Arrangør identificeret", note: "Ring igen fredag", created: "8. JUNI" },
   { id: "RP-10XX", organizer: "Nordjyllands Historiske Museum", amount: "DKK XX.XXX", status: "Ny", progress: 1, step: "Returnering registreret", note: "—", created: "18. JUNI" },
+  { id: "RP-10XX", organizer: "Aalborg Teater", amount: "DKK XX.XXX", status: "Afventer", progress: 3, step: "Bilag afventer gennemgang", note: "Mangler kvittering", created: "17. JUNI" },
+  { id: "RP-10XX", organizer: "Aalborg Symfoniorkester", amount: "DKK XX.XXX", status: "Under behandling", progress: 5, step: "Udbetaling klargjort", note: "Beløb godkendt", created: "16. JUNI" },
+  { id: "RP-10XX", organizer: "Kulturhuset Trekanten", amount: "DKK XX.XXX", status: "Afventer", progress: 4, step: "Afventer svar fra arrangør", note: "Mail sendt 15. juni", created: "15. JUNI" },
+  { id: "RP-10XX", organizer: "Børnekulturhuset", amount: "DKK XX.XXX", status: "Ny", progress: 1, step: "Sag modtaget", note: "—", created: "14. JUNI" },
+  { id: "RP-10XX", organizer: "Aalborg Kongres & Kultur Center", amount: "DKK XX.XXX", status: "Afsluttet", progress: 6, step: "Udbetaling gennemført", note: "Afstemt", created: "13. JUNI" },
+  { id: "RP-10XX", organizer: "Mikkel", amount: "DKK 500.000.000", status: "Under behandling", progress: 3, step: "Oplysninger gennemgå", note: "Tue er Sej", created: "11. JUNI" },
+  { id: "RP-10XX", organizer: "Kunsten Museum of Modern Art", amount: "DKK XX.XXX", status: "Afventer", progress: 2, step: "Afventer dokumentation", note: "Rykkes i næste uge", created: "9. JUNI" },
+  { id: "RP-10XX", organizer: "Aalborg Karneval", amount: "DKK XX.XXX", status: "Ny", progress: 1, step: "Sag modtaget", note: "—", created: "7. JUNI" },
 ];
 
 const WORKFLOW_STEPS = [
@@ -32,6 +40,8 @@ const getOwner = (step: number) => step <= 4 ? "Kundeservice" : "Bekræfter";
 
 const Container = styled.section`
   width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #000;
   color: #292929;
   background: #f9f8f4;
   font-family: "Courier New", monospace;
@@ -68,12 +78,15 @@ const Filters = styled.div`
   @media (max-width: 460px) { grid-template-columns: 1fr; }
 `;
 
-const TableWrap = styled.div`overflow-x: auto;`;
+const TableWrap = styled.div`
+  max-height: 520px;
+  overflow: auto;
+`;
 
 const CaseTable = styled.table`
   width: 100%; min-width: 1150px; border-collapse: collapse; table-layout: fixed;
   th, td { text-align: left; border-bottom: 1px solid #aaa; }
-  th { height: 46px; padding: 0 20px; background: #e7e5df; font-size: 11px; font-weight: 400; }
+  th { position: sticky; top: 0; z-index: 1; height: 46px; padding: 0 20px; background: #e7e5df; font-size: 11px; font-weight: 400; }
   td { height: 84px; padding: 0 20px; font-size: 13px; }
   th:nth-child(1) { width: 20%; } th:nth-child(2) { width: 10%; }
   th:nth-child(3) { width: 16%; } th:nth-child(4) { width: 15%; }
