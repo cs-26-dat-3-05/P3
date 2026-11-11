@@ -5,6 +5,7 @@ const Heading = styled.h1`
   color: var(--primary-color);
 `;
 import CaseCards from "./components/CaseCards";
+import EmailLayout from "./components/Emails/IndexEmail";
 
 export default function App() {
   return (
@@ -13,7 +14,12 @@ export default function App() {
     <main className="page">
       <Heading>Aktive sager</Heading>
       <CaseCards></CaseCards>
+      <EmailLayout></EmailLayout>
     </main>
     </>
   );
 }
+
+/* 
+
+*/
