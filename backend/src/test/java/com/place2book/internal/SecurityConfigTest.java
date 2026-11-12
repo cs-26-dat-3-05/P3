@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import com.place2book.internal.config.SecurityConfig;
+import com.place2book.internal.controller.CaseController;
 import com.place2book.internal.service.CaseService;
 import com.place2book.internal.service.OrganizerService;
 
@@ -32,13 +33,12 @@ class SecurityConfigTest {
     }
 
     @Nested
-    @WebMvcTest 
+    @WebMvcTest(CaseController.class) // load only required controllers, instead of all
     @Import(SecurityConfig.class)
     @ActiveProfiles("dev")
     class DevProfile {
         @Autowired MockMvc mvc;
         @MockitoBean CaseService caseService;
-        @MockitoBean OrganizerService organizerService;
 
         @Test void healthIsOpen() throws Exception {
             mvc.perform(get("/actuator/health"))
@@ -54,17 +54,16 @@ class SecurityConfigTest {
             mvc.perform(get("/api/cases"))
                 .andExpect(notBlockedBySecurity());
         }
+
     } 
 
-
     @Nested 
-    @WebMvcTest  
+    @WebMvcTest(CaseController.class)  
     @Import(SecurityConfig.class)
     @ActiveProfiles("prod")
     class DefaultProfile {
         @Autowired MockMvc mvc;
         @MockitoBean CaseService caseService;
-        @MockitoBean OrganizerService organizerService;
 
         @Test void healthIsOpen() throws Exception {
             mvc.perform(get("/actuator/health"))
