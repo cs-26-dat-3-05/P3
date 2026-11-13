@@ -44,7 +44,7 @@ class OrganizerServiceTest {
 
         BankAccount account = new BankAccount(1L, 1L, "1234", "5678901234", true, true);
 
-        Event event = new Event(7L, 1L, 1L, "Koncert");
+        Event event = new Event(7L, 1L, 1L, "Koncert", 420.69);
 
         when(place2BookClient.getOrganizer(42L)).thenReturn(Optional.of(organizer));
         when(place2BookClient.getBankAccounts(42L)).thenReturn(List.of(account));

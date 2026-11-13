@@ -41,4 +41,22 @@ public class P2BRepository {
                 .query(Event.class)
                 .list();
     }
+    
+    public Optional<Organizer> findOrganizerFromBankStatement(long accountPrefix, long accountMain, double amount) {
+        return jdbc.sql(
+            """
+            SELECT o.id, o.name, o.cvr, o.email, o.phone
+            FROM organizer o
+            JOIN bank_account b ON b.organizer_id = o.id
+            JOIN event e ON e.organizer_id = o.id
+            WHERE b.accprefix = :accprefix
+            AND b.accmain = :accmain
+            AND e.amount = :amount
+            """
+            ).param("accprefix", String.valueOf(accountPrefix))
+            .param("accmain", String.valueOf(accountMain))
+            .param("amount", amount)
+            .query(Organizer.class)
+            .optional();
+    }
 }

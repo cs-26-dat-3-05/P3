@@ -6,12 +6,14 @@ public class Event {
     private Long bankAccountId; // Kontoen eventet udbetaler til
     private Long organizerId;
     private String name;
+    private double amount;
 
-    public Event(Long id, Long bankAccountId, Long organizerId, String name) {
+    public Event(Long id, Long bankAccountId, Long organizerId, String name, double amount) {
         this.id = id;
         this.bankAccountId = bankAccountId;
         this.organizerId = organizerId;
         this.name = name;
+        this.amount = amount;
     }
 
     public Long getId() {
@@ -44,5 +46,13 @@ public class Event {
 
     public void setOrganizerId(Long organizerId) {
         this.organizerId = organizerId;
+    }
+    
+    public double getEventAmount(double amount) {
+        return amount;
+    }
+    
+    public void setEventAmount(double amount) {
+        this.amount = amount;
     }
 }

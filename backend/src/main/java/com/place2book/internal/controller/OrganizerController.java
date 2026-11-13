@@ -1,6 +1,10 @@
 package com.place2book.internal.controller;
 
+import java.util.Optional;
+
 import com.place2book.internal.dto.OrganizerDto;
+import com.place2book.internal.model.Organizer;
+import com.place2book.internal.repository.P2BRepository;
 import com.place2book.internal.service.OrganizerService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +18,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,8 +28,11 @@ public class OrganizerController {
 
     private final OrganizerService organizerService;
 
-    public OrganizerController(OrganizerService organizerService) {
+    private final P2BRepository repo;
+
+    public OrganizerController(OrganizerService organizerService, P2BRepository repo) {
         this.organizerService = organizerService;
+        this.repo = repo;
     }
 
     /**
@@ -42,5 +50,11 @@ public class OrganizerController {
     public OrganizerDto getOrganizer(
             @Parameter(description = "The organizer's id in Place2Book", example = "55") @PathVariable Long id) {
         return organizerService.getOrganizer(id);
+    }
+    
+    @GetMapping("/getemail")
+    public Organizer getEmail(@RequestParam long accPrefix, @RequestParam long accMain, @RequestParam double amount) {
+        Optional<Organizer> result = repo.findOrganizerFromBankStatement(accPrefix, accMain, amount);
+        return result.get();
     }
 }
