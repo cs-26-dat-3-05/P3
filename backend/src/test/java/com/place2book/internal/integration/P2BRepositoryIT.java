@@ -57,7 +57,7 @@ public class P2BRepositoryIT {
            2 |            1 |               2 | Jazz i Parken              |   50.23
         **/   
         
-        Organizer organizer = p2brepo.findOrganizerFromBankStatement(9070, 1234567890, new BigDecimal(6767.67)).orElseThrow();
+        Organizer organizer = p2brepo.findOrganizerFromBankStatement(9070, 1234567890, new BigDecimal("6767.67")).orElseThrow();
         assertThat(organizer.getId()).isEqualTo(1);
         assertThat(organizer.getName()).isEqualTo("Aalborg Jazz Festival");
         assertThat(organizer.getEmail()).isEqualTo("info@aalborgjazzfestival.dk");
@@ -66,13 +66,13 @@ public class P2BRepositoryIT {
     @Test
     void returnEmptyWhenOnlyOneChildMatches() {
         // bank account is right, but event amount does not match
-        Optional<Organizer> organizer = p2brepo.findOrganizerFromBankStatement(9070, 1234567890, new BigDecimal(100.00));
+        Optional<Organizer> organizer = p2brepo.findOrganizerFromBankStatement(9070, 1234567890, new BigDecimal("100.00"));
         assertThat(organizer.isEmpty());
     }
     
     @Test
     void returnEmptyOptionalNoChildMatches() {
-        Optional<Organizer> organizer = p2brepo.findOrganizerFromBankStatement(-1, -1, new BigDecimal(-1));
+        Optional<Organizer> organizer = p2brepo.findOrganizerFromBankStatement(-1, -1, new BigDecimal("-1"));
         assertThat(organizer.isEmpty());
     }
 }
