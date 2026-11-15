@@ -36,15 +36,20 @@ public class P2BRepositoryIT {
     @Test
     void findOrganizerFromBankStatement() {
         /**
+           PARENT TABLE
+           Organizer id = 1:
            id |          name           |   cvr    |               email               |  phone
            ----+-------------------------+----------+-----------------------------------+----------
            1 | Aalborg Jazz Festival   | 12345678 | info@aalborgjazzfestival.dk | 12345678
            
+           CHILD TABLES
+           Bank accounts:
            id | organizer_id | accprefix |  accmain   | event_default | active
            ----+--------------+-----------+------------+---------------+--------
            1 |            1 | 9070      | 1234567890 | t             | t
            2 |            1 | 9070      | 0987654321 | f             | t
-  
+           
+           Events:
            id | organizer_id | bank_account_id |            name            | amount
            ----+--------------+-----------------+----------------------------+---------
            1 |            1 |               1 | Aalborg Jazz Festival 2026 | 6767.67

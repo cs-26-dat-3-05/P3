@@ -28,11 +28,8 @@ public class OrganizerController {
 
     private final OrganizerService organizerService;
 
-    private final P2BRepository repo;
-
-    public OrganizerController(OrganizerService organizerService, P2BRepository repo) {
+    public OrganizerController(OrganizerService organizerService) {
         this.organizerService = organizerService;
-        this.repo = repo;
     }
 
     /**
@@ -50,11 +47,5 @@ public class OrganizerController {
     public OrganizerDto getOrganizer(
             @Parameter(description = "The organizer's id in Place2Book", example = "55") @PathVariable Long id) {
         return organizerService.getOrganizer(id);
-    }
-    
-    @GetMapping("/getemail")
-    public Organizer getEmail(@RequestParam long accPrefix, @RequestParam long accMain, @RequestParam double amount) {
-        Optional<Organizer> result = repo.findOrganizerFromBankStatement(accPrefix, accMain, amount);
-        return result.get();
     }
 }
