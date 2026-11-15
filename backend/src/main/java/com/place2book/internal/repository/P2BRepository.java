@@ -1,5 +1,6 @@
 package com.place2book.internal.repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +43,7 @@ public class P2BRepository {
                 .list();
     }
     
-    public Optional<Organizer> findOrganizerFromBankStatement(long accountPrefix, long accountMain, double amount) {
+    public Optional<Organizer> findOrganizerFromBankStatement(long accountPrefix, long accountMain, BigDecimal amount) {
         return jdbc.sql(
             """
             SELECT o.id, o.name, o.cvr, o.email, o.phone
@@ -58,5 +59,6 @@ public class P2BRepository {
             .param("amount", amount)
             .query(Organizer.class)
             .optional();
+        // TODO: lidt funky at konto nr er varchars i db, men long i POJO
     }
 }

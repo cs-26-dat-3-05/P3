@@ -1,14 +1,16 @@
 package com.place2book.internal.model;
 
+import java.math.BigDecimal;
+
 public class Event {
 
     private Long id;
     private Long bankAccountId; // Kontoen eventet udbetaler til
     private Long organizerId;
     private String name;
-    private double amount;
+    private BigDecimal amount;
 
-    public Event(Long id, Long bankAccountId, Long organizerId, String name, double amount) {
+    public Event(Long id, Long bankAccountId, Long organizerId, String name, BigDecimal amount) {
         this.id = id;
         this.bankAccountId = bankAccountId;
         this.organizerId = organizerId;
@@ -48,11 +50,11 @@ public class Event {
         this.organizerId = organizerId;
     }
     
-    public double getEventAmount(double amount) {
+    public BigDecimal getEventAmount() {
         return amount;
     }
     
-    public void setEventAmount(double amount) {
+    public void setEventAmount(BigDecimal amount) {
         this.amount = amount;
     }
 }
