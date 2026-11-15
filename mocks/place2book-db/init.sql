@@ -26,7 +26,8 @@ CREATE TABLE event (
     id              SERIAL PRIMARY KEY,
     organizer_id    INTEGER NOT NULL REFERENCES organizer (id),
     bank_account_id INTEGER NOT NULL REFERENCES bank_account (id),
-    name            TEXT    NOT NULL
+    name            TEXT    NOT NULL,
+    amount	    DECIMAL
 );
 
 -- Test data
@@ -41,12 +42,12 @@ INSERT INTO bank_account (organizer_id, accprefix, accmain, event_default, activ
     (2, '5301', '0000123456', TRUE,  TRUE),
     (3, '2211', '4455667788', TRUE,  FALSE);
 
-INSERT INTO event (organizer_id, bank_account_id, name) VALUES
-    (1, 1, 'Aalborg Jazz Festival 2026'),
-    (1, 2, 'Jazz i Parken'),
-    (2, 3, 'Hamlet'),
-    (2, 3, 'Juleforestilling'),
-    (3, 4, 'Lars Lilholt');
+INSERT INTO event (organizer_id, bank_account_id, name, amount) VALUES
+    (1, 1, 'Aalborg Jazz Festival 2026', 6767.67),
+    (1, 2, 'Jazz i Parken', 50.23),
+    (2, 3, 'Hamlet', 11.11),
+    (2, 3, 'Juleforestilling', 6.76767676767676767),
+    (3, 4, 'Lars Lilholt', 9999999999.99);
 
 -- Read-only user for backend
 CREATE ROLE p3_project_reader WITH LOGIN PASSWORD 'reader';
