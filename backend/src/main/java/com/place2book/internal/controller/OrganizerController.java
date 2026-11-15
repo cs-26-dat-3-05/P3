@@ -1,10 +1,6 @@
 package com.place2book.internal.controller;
 
-import java.util.Optional;
-
 import com.place2book.internal.dto.OrganizerDto;
-import com.place2book.internal.model.Organizer;
-import com.place2book.internal.repository.P2BRepository;
 import com.place2book.internal.service.OrganizerService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +14,6 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

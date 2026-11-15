@@ -27,7 +27,7 @@ CREATE TABLE event (
     organizer_id    INTEGER NOT NULL REFERENCES organizer (id),
     bank_account_id INTEGER NOT NULL REFERENCES bank_account (id),
     name            TEXT    NOT NULL,
-    amount	    DECIMAL
+    amount	    DECIMAL(18, 2)
 );
 
 -- Test data
@@ -46,7 +46,7 @@ INSERT INTO event (organizer_id, bank_account_id, name, amount) VALUES
     (1, 1, 'Aalborg Jazz Festival 2026', 6767.67),
     (1, 2, 'Jazz i Parken', 50.23),
     (2, 3, 'Hamlet', 11.11),
-    (2, 3, 'Juleforestilling', 6.76767676767676767),
+    (2, 3, 'Juleforestilling', 6.76),
     (3, 4, 'Lars Lilholt', 9999999999.99);
 
 -- Read-only user for backend
