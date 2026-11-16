@@ -8,6 +8,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +45,7 @@ class OrganizerServiceTest {
 
         BankAccount account = new BankAccount(1L, 1L, "1234", "5678901234", true, true);
 
-        Event event = new Event(7L, 1L, 1L, "Koncert");
+        Event event = new Event(7L, 1L, 1L, "Koncert", new BigDecimal(420.69));
 
         when(place2BookClient.getOrganizer(42L)).thenReturn(Optional.of(organizer));
         when(place2BookClient.getBankAccounts(42L)).thenReturn(List.of(account));
