@@ -25,7 +25,6 @@ const formatDateMonth = (date: Date): string => {
   return new Intl.DateTimeFormat("da-DK", {
     day: "numeric",
     month: "long",
-    year: "numeric",
   }).format(date);
 };
 
