@@ -11,12 +11,17 @@ import com.place2book.internal.model.CaseStatus;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
-
 @Repository
 public class CaseRepository {
-    private static final String COLUMNS = """
-            id, organizer_id, transaction_id, status, event_id,
-            rejected_registration_number, rejected_account_number, amount, created_at""";
+    // Case columns + organizer name. c = cases, o = organizer
+    private static final String SELECT_WITH_ORGANIZER = """
+            SELECT c.id, c.organizer_id, c.transaction_id, c.status, c.event_id,
+                   c.rejected_registration_number, c.rejected_account_number,
+                   c.amount, c.created_at,
+                   o.name AS organizer_name
+            FROM cases c
+            LEFT JOIN organizer o ON o.organizerid = c.organizer_id
+            """;
 
     private final JdbcClient jdbc;
 
@@ -24,58 +29,55 @@ public class CaseRepository {
         this.jdbc = jdbc;
     }
 
-    /**
-     * Finds cases and returns newest first
-     *
-     * @param status      only cases with this status, or null for all
-     * @param organizerId only cases for this organizer, or null for all
-     */
     public List<Case> findAll(CaseStatus status, String organizerId) {
-        StringBuilder sql = new StringBuilder("SELECT " + COLUMNS + " FROM cases WHERE 1 = 1");
+        StringBuilder sql = new StringBuilder(SELECT_WITH_ORGANIZER + " WHERE 1 = 1");
         Map<String, Object> params = new HashMap<>();
 
         if (status != null) {
-            sql.append(" AND status = :status");
+            sql.append(" AND c.status = :status");
             params.put("status", status.name());
         }
         if (organizerId != null) {
-            sql.append(" AND organizer_id = :organizerId");
+            sql.append(" AND c.organizer_id = :organizerId");
             params.put("organizerId", organizerId);
         }
-        sql.append(" ORDER BY created_at DESC, id DESC");
+        sql.append(" ORDER BY c.created_at DESC, c.id DESC");
 
         return jdbc.sql(sql.toString())
-            .params(params)
-            .query(Case.class)
-            .list();
+                .params(params)
+                .query(Case.class)
+                .list();
     }
 
     public Optional<Case> findById(long id) {
-        return jdbc.sql("SELECT " + COLUMNS + " FROM cases WHERE id = ?")
-            .param(id)
-            .query(Case.class)
-            .optional();
+        return jdbc.sql(SELECT_WITH_ORGANIZER + " WHERE c.id = ?")
+                .param(id)
+                .query(Case.class)
+                .optional();
     }
 
     /**
-     * Inserts the case and returns it with the id and createdAt set by the database.
+     * Inserts the case and returns it with id, createdAt and organizerName set.
      */
     public Case insert(Case newCase) {
-        return jdbc.sql("""
+        long id = jdbc.sql("""
                 INSERT INTO cases (organizer_id, transaction_id, status, event_id,
                                    rejected_registration_number, rejected_account_number, amount)
                 VALUES (:organizerId, :transactionId, :status, :eventId,
                         :rejectedRegistrationNumber, :rejectedAccountNumber, :amount)
-                """ + "RETURNING " + COLUMNS)
-            .param("organizerId", newCase.getOrganizerId())
-            .param("transactionId", newCase.getTransactionId())
-            .param("status", newCase.getStatus().name())
-            .param("eventId", newCase.getEventId())
-            .param("rejectedRegistrationNumber", newCase.getRejectedRegistrationNumber())
-            .param("rejectedAccountNumber", newCase.getRejectedAccountNumber())
-            .param("amount", newCase.getAmount())
-            .query(Case.class)
-            .single();
+                RETURNING id
+                """)
+                .param("organizerId", newCase.getOrganizerId())
+                .param("transactionId", newCase.getTransactionId())
+                .param("status", newCase.getStatus().name())
+                .param("eventId", newCase.getEventId())
+                .param("rejectedRegistrationNumber", newCase.getRejectedRegistrationNumber())
+                .param("rejectedAccountNumber", newCase.getRejectedAccountNumber())
+                .param("amount", newCase.getAmount())
+                .query(Long.class)
+                .single();
+
+        return findById(id).orElseThrow();
     }
 
     /**
@@ -83,8 +85,8 @@ public class CaseRepository {
      */
     public boolean updateStatus(long id, CaseStatus status) {
         return jdbc.sql("UPDATE cases SET status = ? WHERE id = ?")
-            .param(status.name())
-            .param(id)
-            .update() == 1;
+                .param(status.name())
+                .param(id)
+                .update() == 1;
     }
 }
