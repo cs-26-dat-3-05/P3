@@ -37,28 +37,27 @@ public class P2BRepository {
 
     public List<Event> findEventsByOrganizerId(long organizerId) {
         return jdbc.sql(
-                "SELECT id, bank_account_id, name, organizer_id FROM event WHERE organizer_id = ?")
+                "SELECT id, bank_account_id, name, organizer_id, amount FROM event WHERE organizer_id = ?")
                 .param(organizerId)
                 .query(Event.class)
                 .list();
     }
-    
+
     public Optional<Organizer> findOrganizerFromBankStatement(long accountPrefix, long accountMain, BigDecimal amount) {
         return jdbc.sql(
-            """
-            SELECT o.id, o.name, o.cvr, o.email, o.phone
-            FROM organizer o
-            JOIN bank_account b ON b.organizer_id = o.id
-            JOIN event e ON e.organizer_id = o.id
-            WHERE b.accprefix = :accprefix
-            AND b.accmain = :accmain
-            AND e.amount = :amount
-            """
-            ).param("accprefix", String.valueOf(accountPrefix))
-            .param("accmain", String.valueOf(accountMain))
-            .param("amount", amount)
-            .query(Organizer.class)
-            .optional();
+                """
+                        SELECT o.id, o.name, o.cvr, o.email, o.phone
+                        FROM organizer o
+                        JOIN bank_account b ON b.organizer_id = o.id
+                        JOIN event e ON e.organizer_id = o.id
+                        WHERE b.accprefix = :accprefix
+                        AND b.accmain = :accmain
+                        AND e.amount = :amount
+                        """).param("accprefix", String.valueOf(accountPrefix))
+                .param("accmain", String.valueOf(accountMain))
+                .param("amount", amount)
+                .query(Organizer.class)
+                .optional();
         // TODO: lidt funky at konto nr er varchars i db, men long i POJO
     }
 }
