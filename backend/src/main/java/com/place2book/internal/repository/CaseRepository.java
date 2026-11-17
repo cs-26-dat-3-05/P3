@@ -17,7 +17,7 @@ public class CaseRepository {
     private static final String SELECT_WITH_ORGANIZER = """
             SELECT c.id, c.organizer_id, c.transaction_id, c.status, c.event_id,
                    c.rejected_registration_number, c.rejected_account_number,
-                   c.amount, c.created_at,
+                   c.amount, c.created_at, c.requires_action,
                    o.name AS organizer_name
             FROM cases c
             LEFT JOIN organizer o ON o.organizerid = c.organizer_id
