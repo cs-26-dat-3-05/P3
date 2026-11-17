@@ -157,7 +157,11 @@ const WORKFLOW_STEPS = [
 
 const getOwner = (step: number) => (step <= 4 ? "Kundeservice" : "Bekræfter");
 
-export default function Sagsoversigt() {
+type SagsoversigtProps = {
+  onOpenCase: () => void;
+};
+
+export default function Sagsoversigt({ onOpenCase }: SagsoversigtProps) {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("alle");
   const [progress, setProgress] = useState("alle");
@@ -251,6 +255,7 @@ export default function Sagsoversigt() {
               <CaseRow
                 key={`${item.organizer}-${index}`}
                 $attention={item.status === "Kræver opmærksomhed"}
+                onClick={onOpenCase}
               >
                 <td>
                   <CaseName>
