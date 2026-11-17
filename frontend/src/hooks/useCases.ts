@@ -1,18 +1,11 @@
-import { useEffect, useState } from "react";
-import { casesApi, type Case } from "../api/cases";
+import { useQuery } from "@tanstack/react-query";
+import { casesApi } from "../api/cases";
 
 export function useCases() {
-  const [cases, setCases] = useState<Case[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["cases"],
+    queryFn: casesApi.getAll,
+  });
 
-  useEffect(() => {
-    casesApi
-      .getAll()
-      .then((data) => setCases(data))
-      .catch((err) => setError(err))
-      .finally(() => setLoading(false));
-  }, []);
-
-  return { cases, loading, error };
+  return { cases: data ?? [], loading: isLoading, error };
 }

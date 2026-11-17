@@ -132,14 +132,12 @@ export const Status = styled.span`
   padding: 5px 10px;
   border: 2px solid #777;
   border-radius: 18px;
-  white-space: nowrap;
   font-size: 11px;
 `;
 
 export const Progress = styled.div`
   color: #777;
   font-size: 12px;
-  white-space: nowrap;
   div {
     height: 10px;
     margin-top: 7px;
