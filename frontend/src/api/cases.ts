@@ -16,6 +16,7 @@ export interface Case {
   rejectedAccountNumber: string;
   amount: number;
   createdAt: string;
+  requiresAction: boolean;
 }
 
 export const casesApi = {

@@ -133,7 +133,7 @@ export default function Sagsoversigt({ onOpenCase }: SagsoversigtProps) {
             {visibleCases.map((item, index) => (
               <CaseRow
                 key={`${item.organizerId}-${index}`}
-                $attention={item.status === "RETRANSFERRED"}
+                $attention={item.requiresAction == true}
                 onClick={onOpenCase}
               >
                 <td>
@@ -144,11 +144,16 @@ export default function Sagsoversigt({ onOpenCase }: SagsoversigtProps) {
                 </td>
                 <td>{item.amount} DKK</td>
                 <td>
-                  <Status>{STATUS_MAP[item.status].label.toUpperCase()}</Status>
+                  <Status>
+                    {item.requiresAction
+                      ? "Kræver handling"
+                      : STATUS_MAP[item.status].label.toUpperCase()}
+                  </Status>
                 </td>
                 <td>
                   <Progress>
-                    {STATUS_MAP[item.status].step} /5
+                    {STATUS_MAP[item.status].label.toUpperCase()} (
+                    {STATUS_MAP[item.status].step}/5)
                     <div>
                       <span
                         style={{
@@ -158,8 +163,8 @@ export default function Sagsoversigt({ onOpenCase }: SagsoversigtProps) {
                     </div>
                   </Progress>
                 </td>
-                <td>Ansvarlig</td>
-                <td>Note</td>
+                <td>Navn</td>
+                <td>-</td>
                 <td>{formatDateMonth(new Date(item.createdAt))}</td>
               </CaseRow>
             ))}

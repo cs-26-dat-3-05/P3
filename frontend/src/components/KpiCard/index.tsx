@@ -17,6 +17,9 @@ export default function KpiCards() {
   const awaitingCount = cases.filter(
     (c) => c.status == "BANK_DETAILS_REQUESTED",
   ).length;
+  const requiresActionCount = cases.filter(
+    (c) => c.requiresAction == true,
+  ).length;
 
   if (loading) return <p>Indlæser…</p>;
   return (
@@ -25,7 +28,11 @@ export default function KpiCards() {
         <KpiCard label="aktive sager" count={activeCount} />
         <KpiCard label="afventer svar" count={awaitingCount} />
         <KpiCard label="afsluttede sager" count={closedCount} />
-        <KpiCard label="kræver handling" count={0} highlighted />
+        <KpiCard
+          label="kræver handling"
+          count={requiresActionCount}
+          highlighted
+        />
       </KpiRow>
     </>
   );
