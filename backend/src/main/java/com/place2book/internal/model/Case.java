@@ -15,11 +15,12 @@ public class Case {
     private String rejectedAccountNumber; // Konto nr. the payout was rejected from
     private BigDecimal amount;
     private LocalDateTime createdAt;
+    private boolean requiresAction;
 
     public Case(Long id, CaseStatus status, String organizerId, String organizerName, Long transactionId,
             String eventId,
             String rejectedRegistrationNumber, String rejectedAccountNumber, BigDecimal amount,
-            LocalDateTime createdAt) {
+            LocalDateTime createdAt, boolean requiresAction) {
         this.id = id;
         this.status = status;
         this.organizerId = organizerId;
@@ -30,6 +31,7 @@ public class Case {
         this.rejectedAccountNumber = rejectedAccountNumber;
         this.amount = amount;
         this.createdAt = createdAt;
+        this.requiresAction = requiresAction;
 
     }
 
@@ -114,5 +116,13 @@ public class Case {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean getRequiresAction() {
+        return requiresAction;
+    }
+
+    public void setRequiresAction(boolean requiresAction) {
+        this.requiresAction = requiresAction;
     }
 }

@@ -13,6 +13,7 @@ CREATE TABLE cases(
     rejected_account_number      VARCHAR(30)   NOT NULL,
     amount                       DECIMAL(10,2) NOT NULL,
     created_at                   TIMESTAMP     NOT NULL DEFAULT now(),
+    requires_action              BOOLEAN       NOT NULL DEFAULT FALSE,
     CONSTRAINT cases_status_check CHECK (status IN (
         'REGISTERED', 'ORGANIZER_IDENTIFIED', 'BANK_DETAILS_REQUESTED', 'BANK_DETAILS_RECEIVED', 'RETRANSFERRED'))
 );

@@ -16,10 +16,10 @@ INSERT INTO User_Table(UserID, Name) VALUES
     (3, 'Christoffer');
 
 -- Ids are generated, so the cases get id 1, 2 and 3 in this order
-INSERT INTO cases(organizer_id, transaction_id, status, event_id, rejected_registration_number, rejected_account_number, amount, created_at) VALUES
-    ('1', 1, 'BANK_DETAILS_REQUESTED', '1', '438205824291', '5802853291', 8372.85, '2026-10-01 09:00:00'),
-    ('4', 2, 'ORGANIZER_IDENTIFIED', '2', '138225826391', '9862850221', 24256.22, '2026-10-17 09:00:00'),
-    ('7', 3, 'REGISTERED', '3', '134225827398', '1462850921', 100000.22, '2026-11-02 09:00:00');
+INSERT INTO cases(organizer_id, transaction_id, status, event_id, rejected_registration_number, rejected_account_number, amount, created_at, requires_action) VALUES
+    ('1', 1, 'BANK_DETAILS_REQUESTED', '1', '438205824291', '5802853291', 8372.85, '2026-10-01 09:00:00', false),
+    ('4', 2, 'ORGANIZER_IDENTIFIED', '2', '138225826391', '9862850221', 24256.22, '2026-10-17 09:00:00', true),
+    ('7', 3, 'REGISTERED', '3', '134225827398', '1462850921', 100000.22, '2026-11-02 09:00:00', false);
 
 INSERT INTO case_log(case_id, status, performed_by, created_at) VALUES
     (1, 'REGISTERED', 'Anders', '2026-10-01 09:00:00'),
