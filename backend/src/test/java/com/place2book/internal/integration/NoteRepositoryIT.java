@@ -100,7 +100,7 @@ class NoteRepositoryIT {
 
         List<Note> notes = noteRepository.findByCaseId(caseId);
 
-        assertThat(notes).extracting(Note::getId).containsExactly(first.getId(), second.getId());
+        assertThat(notes).extracting(Note::getId).containsExactly(second.getId(), first.getId());
     }
 
     @Test
