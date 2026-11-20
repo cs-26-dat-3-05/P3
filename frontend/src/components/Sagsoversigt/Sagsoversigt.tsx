@@ -49,8 +49,7 @@ export default function Sagsoversigt({ onOpenCase }: SagsoversigtProps) {
       cases.filter((item) => {
         const step = STATUS_MAP[item.status]?.step;
         const searchableText =
-          `${item.id} ${item.organizerId} note`.toLowerCase();
-
+          `${item.id} RP-${item.organizerId} ${item.organizerName}`.toLowerCase();
         return (
           searchableText.includes(query.toLowerCase()) &&
           (status === "alle" || item.status === status) &&
@@ -85,7 +84,9 @@ export default function Sagsoversigt({ onOpenCase }: SagsoversigtProps) {
           >
             <option value="alle">alle</option>
             {[...new Set(cases.map((item) => item.status))].map((value) => (
-              <option key={value}>{STATUS_MAP[value].label}</option>
+              <option key={value} value={value}>
+                {STATUS_MAP[value]?.label ?? value}
+              </option>
             ))}
           </FilterSelect>
         </label>
