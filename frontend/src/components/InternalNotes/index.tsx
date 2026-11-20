@@ -24,7 +24,6 @@ export default function InternalNotes({ caseId, notes }: Props) {
   const [text, setText] = useState("");
   const createNote = useCreateNote(caseId);
 
-  // Nyeste først
   const sortedNotes = [...notes].sort((a, b) =>
     b.createdAt.localeCompare(a.createdAt),
   );

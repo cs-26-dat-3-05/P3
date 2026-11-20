@@ -87,7 +87,7 @@ function buildSteps(caseData: Case, history: CaseHistoryEntry[]): Step[] {
     if (isDone) {
       const entry = findLatestEntry(history, def.doneAt);
       if (entry) date = formatDate(entry.createdAt);
-      // Fallback for trin 1, hvis historikken mangler
+      // step 1 fallback if case log is empty
       else if (index === 0) date = formatDate(caseData.createdAt);
     }
 
