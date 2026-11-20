@@ -16,7 +16,7 @@ import { createGlobalStyle } from "styled-components";
  * Side wrapper med padding
  *   <main className="page">...</main>
  *
- * Klasser: box, page
+ * Klasser: box
  */
 
 const GlobalStyles = createGlobalStyle`
@@ -47,9 +47,6 @@ const GlobalStyles = createGlobalStyle`
     border: var(--border);
     box-shadow: var(--shadow);
     padding: 8px;
-  }
-  .page {
-    padding: 50px;
   }
 `;
 export default GlobalStyles;

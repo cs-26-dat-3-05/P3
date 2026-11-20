@@ -8,29 +8,35 @@ public class Case {
     private Long id;
     private CaseStatus status;
     private String organizerId;
+    private String organizerName;
     private Long transactionId; // the rejected payout from the bank statement
     private String eventId;
     private String rejectedRegistrationNumber; // Reg nr. the payout was rejected from
     private String rejectedAccountNumber; // Konto nr. the payout was rejected from
     private BigDecimal amount;
     private LocalDateTime createdAt;
+    private boolean requiresAction;
 
-    public Case(Long id, CaseStatus status, String organizerId, Long transactionId, String eventId,
-                String rejectedRegistrationNumber, String rejectedAccountNumber, BigDecimal amount,
-                LocalDateTime createdAt) {
+    public Case(Long id, CaseStatus status, String organizerId, String organizerName, Long transactionId,
+            String eventId,
+            String rejectedRegistrationNumber, String rejectedAccountNumber, BigDecimal amount,
+            LocalDateTime createdAt, boolean requiresAction) {
         this.id = id;
         this.status = status;
         this.organizerId = organizerId;
+        this.organizerName = organizerName;
         this.transactionId = transactionId;
         this.eventId = eventId;
         this.rejectedRegistrationNumber = rejectedRegistrationNumber;
         this.rejectedAccountNumber = rejectedAccountNumber;
         this.amount = amount;
         this.createdAt = createdAt;
+        this.requiresAction = requiresAction;
 
     }
 
-    public Case() {}
+    public Case() {
+    }
 
     public Long getId() {
         return id;
@@ -54,6 +60,14 @@ public class Case {
 
     public void setOrganizerId(String organizerId) {
         this.organizerId = organizerId;
+    }
+
+    public String getOrganizerName() {
+        return organizerName;
+    }
+
+    public void setOrganizerName(String organizerName) {
+        this.organizerName = organizerName;
     }
 
     public Long getTransactionId() {
@@ -102,5 +116,13 @@ public class Case {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean getRequiresAction() {
+        return requiresAction;
+    }
+
+    public void setRequiresAction(boolean requiresAction) {
+        this.requiresAction = requiresAction;
     }
 }
