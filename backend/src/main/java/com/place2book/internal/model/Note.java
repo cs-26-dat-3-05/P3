@@ -9,9 +9,15 @@ public class Note {
     private String createdBy; // who created the note
     private LocalDateTime createdAt;
 
-    public Note() {
-
+    public Note(Long id, Long caseId, String text, String createdBy, LocalDateTime createdAt) {
+        this.id = id;
+        this.caseId = caseId;
+        this.text = text;
+        this.createdBy = createdBy;
+        this.createdAt = createdAt;
     }
+
+    public Note() {}
 
     public Long getId() {
         return id;

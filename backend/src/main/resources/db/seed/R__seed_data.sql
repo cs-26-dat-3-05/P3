@@ -1,4 +1,4 @@
-TRUNCATE Transaction, Organizer, User_Table, cases, case_log, Retransfer, Note RESTART IDENTITY CASCADE;
+TRUNCATE Transaction, Organizer, User_Table, cases, case_log, Retransfer, notes RESTART IDENTITY CASCADE;
 
 INSERT INTO Transaction(TransactionID, ULID, BookingDate, Amount, Currency, RemittanceText, CreatedAt) VALUES
     (1, '01M6F3TCCKQXZW4M9TPK0VEHA1', '2026-09-30', 8372.85, 'DKK', 'Udbetaling Place2Book den 30. september 2026', '2026-09-30 09:00:00'),
@@ -33,9 +33,9 @@ INSERT INTO Retransfer(RetransferID, CaseID, RegistrationNumber, AccountNumber, 
     (1, 1, '438205824291', '290249028', 8372.85,'PAY-20261024-0001', 'ACSC', '2026-10-20 09:00:00' ),
     (2,2, '138225826391', '190949528', 24256.22,'PAY-20261025-0002', 'PDNG', '2026-10-30 09:00:00');
 
-INSERT INTO Note(NoteID, CaseID, UserID, Content, CreatedAt) VALUES
-    (1, 1, 1, 'Følg op på Rekom, da de ikke svarer.', '2026-10-02 09:00:00'),
-    (2, 1, 1, 'Rekom har åbenbart problemer med at skifte konto.', '2026-10-05 09:00:00'),
-    (3, 1, 1, 'De er helt væk, men transaktionen er fuldført.', '2026-10-20 09:00:00'),
-    (4, 2, 2, 'Jeg har tjekket op på Svens lydgrotte og der mangler bare at bekræftes.', '2026-10-20 09:00:00'),
-    (5, 3, 2, '100000 skal sendes så vær lige ekstra forsigtig.', '2026-11-02 09:00:00');
+INSERT INTO notes(case_id, text, created_by, created_at) VALUES
+    (1, 'Følg op på Rekom, da de ikke svarer.', 'Anders', '2026-10-02 09:00:00'),
+    (1, 'Rekom har åbenbart problemer med at skifte konto.', 'Anders', '2026-10-05 09:00:00'),
+    (1, 'De er helt væk, men transaktionen er fuldført.', 'Anders', '2026-10-20 09:00:00'),
+    (2, 'Jeg har tjekket op på Svens lydgrotte og der mangler bare at bekræftes.', 'Anton', '2026-10-20 09:00:00'),
+    (3, '100000 skal sendes så vær lige ekstra forsigtig.', 'Anton', '2026-11-02 09:00:00');
