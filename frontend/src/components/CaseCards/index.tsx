@@ -1,3 +1,6 @@
+import type { Case } from "../../api/cases";
+import { STATUS_MAP } from "../../constants/caseStatus";
+import { formatAmount, formatDate } from "../../utils/format";
 import { Container, Card, CardHeader, CardTable, TdRight } from "./style";
 
 interface CardRow {
@@ -13,56 +16,92 @@ interface CardData {
   rows: CardRow[];
 }
 
-const MOCK_CASE_CARDS: CardData[] = [
-  {
-    id: "case",
-    title: "Sag",
-    span: 1,
-    rows: [
-      { label: "OPRETTET", id: "createdAt", value: "18.06.2025" },
-      { label: "ARRANGØR-ID", id: "organizerId", value: "EM12345" },
-      { label: "EVENT-ID", id: "eventId", value: "F12345" },
-    ],
-  },
-  {
-    id: "payment",
-    title: "Betaling",
-    span: 2,
-    rows: [
-      { label: "BELØB", id: "amount", value: "DKK 48.520,00" },
-      {
-        label: "FORKERT KONTONUMMER",
-        id: "accMain",
-        value: "1234 / 567890123",
-      },
-      {
-        label: "KORREKT KONTONUMMER",
-        id: "accPrefix",
-        value: "IKKE INDTASTET",
-      },
-      { label: "BETALINGSDATO", id: "dueDate", value: "AFVENTER KONTONUMMER" },
-    ],
-  },
-  {
-    id: "organizer",
-    title: "Arrangør",
-    span: 1,
-    rows: [
-      { label: "KONTAKTPERSON", id: "contactPerson", value: "METTE JENSEN" },
-      { label: "E-MAIL", id: "mail", value: "METTE@AALBORG.DK" },
-      { label: "TELEFON", id: "phoneNumber", value: "+45 99 31 XX XX" },
-    ],
-  },
-];
+type Props = { caseData: Case };
 
-export default function CaseCards() {
-  const columns = MOCK_CASE_CARDS.map(
-    (card) => `minmax(0, ${card.span}fr)`,
-  ).join(" "); // => `minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr)`
+/** Vises for felter, backenden ikke leverer endnu */
+const EMPTY = "—";
+
+function getCorrectAccountText(caseData: Case): string {
+  const step = STATUS_MAP[caseData.status].step;
+  if (step < STATUS_MAP.BANK_DETAILS_RECEIVED.step) return "IKKE INDTASTET";
+  // TODO: vis det korrekte kontonummer, når backenden sender det med
+  return EMPTY;
+}
+
+function getPaymentDateText(caseData: Case): string {
+  const step = STATUS_MAP[caseData.status].step;
+  if (step < STATUS_MAP.BANK_DETAILS_RECEIVED.step)
+    return "AFVENTER KONTONUMMER";
+  if (step < STATUS_MAP.RETRANSFERRED.step) return "AFVENTER UDBETALING";
+  // TODO: vis udbetalingsdatoen, når backenden sender den med
+  return EMPTY;
+}
+
+function buildCards(caseData: Case): CardData[] {
+  return [
+    {
+      id: "case",
+      title: "Sag",
+      span: 1,
+      rows: [
+        {
+          label: "OPRETTET",
+          id: "createdAt",
+          value: formatDate(caseData.createdAt),
+        },
+        {
+          label: "ARRANGØR-ID",
+          id: "organizerId",
+          value: caseData.organizerId,
+        },
+        { label: "EVENT-ID", id: "eventId", value: caseData.eventId },
+      ],
+    },
+    {
+      id: "payment",
+      title: "Betaling",
+      span: 2,
+      rows: [
+        { label: "BELØB", id: "amount", value: formatAmount(caseData.amount) },
+        {
+          label: "FORKERT KONTONUMMER",
+          id: "rejectedAccount",
+          value: `${caseData.rejectedRegistrationNumber} / ${caseData.rejectedAccountNumber}`,
+        },
+        {
+          label: "KORREKT KONTONUMMER",
+          id: "correctAccount",
+          value: getCorrectAccountText(caseData),
+        },
+        {
+          label: "BETALINGSDATO",
+          id: "paymentDate",
+          value: getPaymentDateText(caseData),
+        },
+      ],
+    },
+    {
+      id: "organizer",
+      title: "Arrangør",
+      span: 1,
+      // TODO: kontaktoplysninger kræver et arrangør-endpoint
+      rows: [
+        { label: "KONTAKTPERSON", id: "contactPerson", value: EMPTY },
+        { label: "E-MAIL", id: "email", value: EMPTY },
+        { label: "TELEFON", id: "phoneNumber", value: EMPTY },
+      ],
+    },
+  ];
+}
+
+export default function CaseCards({ caseData }: Props) {
+  const cards = buildCards(caseData);
+
+  const columns = cards.map((card) => `minmax(0, ${card.span}fr)`).join(" "); // => `minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr)`
 
   return (
     <Container $columns={columns}>
-      {MOCK_CASE_CARDS.map((card) => (
+      {cards.map((card) => (
         <Card key={card.id}>
           <CardHeader>{card.title}</CardHeader>
           <CardTable>

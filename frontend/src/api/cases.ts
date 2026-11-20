@@ -19,7 +19,20 @@ export interface Case {
   requiresAction: boolean;
 }
 
+export interface CaseHistoryEntry {
+  id: number;
+  caseId: number;
+  status: Case["status"];
+  performedBy: string;
+  createdAt: string;
+}
+
 export const casesApi = {
   /** GET /api/cases */
   getAll: () => api.get<Case[]>("/cases"),
+  /** GET /api/cases/{id} */
+  getById: (id: number) => api.get<Case>(`/cases/${id}`),
+  /** GET /api/cases/{id}/history */
+  getHistory: (id: number) =>
+    api.get<CaseHistoryEntry[]>(`/cases/${id}/history`),
 };

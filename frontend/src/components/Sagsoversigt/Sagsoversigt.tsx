@@ -1,4 +1,5 @@
-﻿import { useMemo, useState } from "react";
+﻿import { useState } from "react";
+import { useQueries } from "@tanstack/react-query";
 import {
   CaseName,
   CaseRow,
@@ -12,53 +13,63 @@ import {
   TableWrap,
 } from "./style";
 import { useCases } from "../../hooks/useCases";
+import { useNotes } from "../../hooks/useNotes";
+import { caseHistoryQuery } from "../../hooks/useCaseHistory";
+import { useNavigate } from "react-router";
+import { STATUS_MAP } from "../../constants/caseStatus";
+import { formatAmount, formatDateMonth } from "../../utils/format";
 
-const STATUS_MAP = {
-  REGISTERED: { step: 1, label: "Sag modtaget" },
-  ORGANIZER_IDENTIFIED: { step: 2, label: "Arrangør identificeret" },
-  BANK_DETAILS_REQUESTED: { step: 3, label: "Anmodet om kontooplysninger" },
-  BANK_DETAILS_RECEIVED: { step: 4, label: "Kontooplysninger modtaget" },
-  RETRANSFERRED: { step: 5, label: "Udbetaling gennemført" },
-};
+function LatestNoteCell({ caseId }: { caseId: number }) {
+  const { notes, loading } = useNotes(caseId);
 
-const formatDateMonth = (date: Date): string => {
-  return new Intl.DateTimeFormat("da-DK", {
-    day: "numeric",
-    month: "long",
-  }).format(date);
-};
+  if (loading) return <>…</>;
+  if (notes.length === 0) return <>—</>;
 
-const getOwner = (step: number) => (step <= 4 ? "Kundeservice" : "Bekræfter");
+  const latest = notes.reduce((a, b) => (a.createdAt > b.createdAt ? a : b));
+  return <>{latest.text}</>;
+}
 
-type SagsoversigtProps = {
-  onOpenCase: () => void;
-};
-
-export default function Sagsoversigt({ onOpenCase }: SagsoversigtProps) {
+export default function Sagsoversigt() {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("alle");
   const [progress, setProgress] = useState("alle");
   const [owner, setOwner] = useState("alle");
 
+  const navigate = useNavigate();
+
   const { cases, loading, error } = useCases();
 
-  if (error) console.log(error.message);
+  // fetches history from cases
+  const historyResults = useQueries({
+    queries: cases.map((c) => caseHistoryQuery(c.id)),
+  });
 
-  const visibleCases = useMemo(
-    () =>
-      cases.filter((item) => {
-        const step = STATUS_MAP[item.status]?.step;
-        const searchableText =
-          `${item.id} RP-${item.organizerId} ${item.organizerName}`.toLowerCase();
-        return (
-          searchableText.includes(query.toLowerCase()) &&
-          (status === "alle" || item.status === status) &&
-          (progress === "alle" || step === Number(progress)) &&
-          (owner === "alle" || getOwner(step) === owner)
-        );
-      }),
-    [cases, query, status, progress, owner],
-  );
+  // set owner to last perfomedBy entry from case history
+  const ownerByCase = new Map<number, string>();
+  cases.forEach((c, i) => {
+    const history = historyResults[i]?.data ?? [];
+    if (history.length === 0) return;
+    const latest = history.reduce((a, b) =>
+      a.createdAt > b.createdAt ? a : b,
+    );
+    ownerByCase.set(c.id, latest.performedBy);
+  });
+
+  const ownerOptions = [...new Set(ownerByCase.values())].sort();
+
+  const visibleCases = cases.filter((item) => {
+    const step = STATUS_MAP[item.status]?.step;
+    const searchableText =
+      `${item.id} RP-${item.organizerId} ${item.organizerName}`.toLowerCase();
+    return (
+      searchableText.includes(query.toLowerCase()) &&
+      (status === "alle" || item.status === status) &&
+      (progress === "alle" || step === Number(progress)) &&
+      (owner === "alle" || ownerByCase.get(item.id) === owner)
+    );
+  });
+
+  if (error) return <Container>Kunne ikke hente sager.</Container>;
 
   return (
     <Container>
@@ -111,8 +122,11 @@ export default function Sagsoversigt({ onOpenCase }: SagsoversigtProps) {
             onChange={(event) => setOwner(event.target.value)}
           >
             <option value="alle">alle</option>
-            <option value="Kundeservice">Kundeservice</option>
-            <option value="Bekræfter">Bekræfter</option>
+            {ownerOptions.map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
+            ))}
           </FilterSelect>
         </label>
       </Filters>
@@ -131,11 +145,11 @@ export default function Sagsoversigt({ onOpenCase }: SagsoversigtProps) {
             </tr>
           </thead>
           <tbody>
-            {visibleCases.map((item, index) => (
+            {visibleCases.map((item) => (
               <CaseRow
-                key={`${item.organizerId}-${index}`}
+                key={item.id}
                 $attention={item.requiresAction == true}
-                onClick={onOpenCase}
+                onClick={() => navigate(`/cases/${item.id}`)}
               >
                 <td>
                   <CaseName>
@@ -143,7 +157,7 @@ export default function Sagsoversigt({ onOpenCase }: SagsoversigtProps) {
                     <span>{item.organizerName}</span>
                   </CaseName>
                 </td>
-                <td>{item.amount} DKK</td>
+                <td>{formatAmount(item.amount)}</td>
                 <td>
                   <Status>
                     {item.requiresAction
@@ -164,9 +178,11 @@ export default function Sagsoversigt({ onOpenCase }: SagsoversigtProps) {
                     </div>
                   </Progress>
                 </td>
-                <td>Navn</td>
-                <td>-</td>
-                <td>{formatDateMonth(new Date(item.createdAt))}</td>
+                <td>{ownerByCase.get(item.id) ?? "—"}</td>
+                <td>
+                  <LatestNoteCell caseId={item.id} />
+                </td>
+                <td>{formatDateMonth(item.createdAt)}</td>
               </CaseRow>
             ))}
             {!loading && visibleCases.length === 0 && (

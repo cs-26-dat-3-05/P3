@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import AktuelleTrin from "../AktuelleTrin";
 import InternalNotes from "../InternalNotes";
+import type { Case } from "../../api/cases";
+import type { Note } from "../../api/notes";
 
 const CaseDetailsWrapper = styled.div`
   display: grid;
@@ -9,11 +11,13 @@ const CaseDetailsWrapper = styled.div`
   margin-top: 24px;
 `;
 
-export default function CaseDetails() {
+type Props = { caseData: Case; notes: Note[] };
+
+export default function CaseDetails({ caseData, notes }: Props) {
   return (
     <CaseDetailsWrapper>
-      <AktuelleTrin></AktuelleTrin>
-      <InternalNotes></InternalNotes>
+      <AktuelleTrin caseData={caseData} />
+      <InternalNotes caseId={caseData.id} notes={notes} />
     </CaseDetailsWrapper>
   );
 }
