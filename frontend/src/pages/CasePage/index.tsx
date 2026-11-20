@@ -19,7 +19,6 @@ import {
 type TabKey = "sagsoversigt" | "email";
 
 export default function CasePage() {
-  // Alle hooks skal kaldes før første return
   const { caseId } = useParams();
   const id = Number(caseId);
   const [activeTab, setActiveTab] = useState<TabKey>("sagsoversigt");
@@ -60,7 +59,6 @@ export default function CasePage() {
           $active={activeTab === "email"}
           onClick={() => setActiveTab("email")}
         >
-          {/* TODO: vis antal, når email-endpointet er færdigt */}
           EMAIL
         </Tab>
       </Tabs>
@@ -68,7 +66,6 @@ export default function CasePage() {
       {activeTab === "sagsoversigt" && (
         <CaseDetails caseData={caseData} notes={notes} />
       )}
-      {/* TODO: Emails-endpoint er ikke færdigt endnu */}
       {activeTab === "email" && <Emails />}
     </>
   );

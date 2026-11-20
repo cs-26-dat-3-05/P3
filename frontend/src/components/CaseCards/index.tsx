@@ -1,4 +1,6 @@
 import type { Case } from "../../api/cases";
+import type { Organizer } from "../../api/organizer";
+import { useOrganizer } from "../../hooks/useOrganizer";
 import { STATUS_MAP } from "../../constants/caseStatus";
 import { formatAmount, formatDate } from "../../utils/format";
 import { Container, Card, CardHeader, CardTable, TdRight } from "./style";
@@ -18,13 +20,13 @@ interface CardData {
 
 type Props = { caseData: Case };
 
-/** Vises for felter, backenden ikke leverer endnu */
 const EMPTY = "—";
+const LOADING = "…";
 
 function getCorrectAccountText(caseData: Case): string {
   const step = STATUS_MAP[caseData.status].step;
   if (step < STATUS_MAP.BANK_DETAILS_RECEIVED.step) return "IKKE INDTASTET";
-  // TODO: vis det korrekte kontonummer, når backenden sender det med
+  // todo: show correct acc details when it's added to backend
   return EMPTY;
 }
 
@@ -33,11 +35,18 @@ function getPaymentDateText(caseData: Case): string {
   if (step < STATUS_MAP.BANK_DETAILS_RECEIVED.step)
     return "AFVENTER KONTONUMMER";
   if (step < STATUS_MAP.RETRANSFERRED.step) return "AFVENTER UDBETALING";
-  // TODO: vis udbetalingsdatoen, når backenden sender den med
+  // todo: show payment date when it's added to backend
   return EMPTY;
 }
 
-function buildCards(caseData: Case): CardData[] {
+function buildCards(
+  caseData: Case,
+  organizer: Organizer | null,
+  organizerLoading: boolean,
+): CardData[] {
+  const organizerValue = (value: string | null | undefined) =>
+    organizerLoading ? LOADING : value || EMPTY;
+
   return [
     {
       id: "case",
@@ -84,18 +93,32 @@ function buildCards(caseData: Case): CardData[] {
       id: "organizer",
       title: "Arrangør",
       span: 1,
-      // TODO: kontaktoplysninger kræver et arrangør-endpoint
       rows: [
-        { label: "KONTAKTPERSON", id: "contactPerson", value: EMPTY },
-        { label: "E-MAIL", id: "email", value: EMPTY },
-        { label: "TELEFON", id: "phoneNumber", value: EMPTY },
+        {
+          label: "KONTAKTPERSON",
+          id: "contact",
+          value: organizerValue(EMPTY), // update to contact when backend is updated
+        },
+        {
+          label: "E-MAIL",
+          id: "email",
+          value: organizerValue(organizer?.email),
+        },
+        {
+          label: "TELEFON",
+          id: "phone",
+          value: organizerValue(organizer?.phone),
+        },
       ],
     },
   ];
 }
 
 export default function CaseCards({ caseData }: Props) {
-  const cards = buildCards(caseData);
+  const { organizer, loading: organizerLoading } = useOrganizer(
+    Number(caseData.organizerId),
+  );
+  const cards = buildCards(caseData, organizer, organizerLoading);
 
   const columns = cards.map((card) => `minmax(0, ${card.span}fr)`).join(" "); // => `minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr)`
 
