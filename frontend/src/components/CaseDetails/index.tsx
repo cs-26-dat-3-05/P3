@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import AktuelleTrin from "../AktuelleTrin";
 import InternalNotes from "../InternalNotes";
+import type { CaseItem } from "../Sagsoversigt/caseData";
 
 const CaseDetailsWrapper = styled.div`
   display: grid;
@@ -9,11 +10,11 @@ const CaseDetailsWrapper = styled.div`
   margin-top: 24px;
 `;
 
-export default function CaseDetails() {
+export default function CaseDetails({ caseItem }: { caseItem: CaseItem }) {
   return (
     <CaseDetailsWrapper>
-      <AktuelleTrin></AktuelleTrin>
-      <InternalNotes></InternalNotes>
+      <AktuelleTrin step={caseItem.step} progress={caseItem.progress} />
+      <InternalNotes note={caseItem.note} />
     </CaseDetailsWrapper>
   );
 }

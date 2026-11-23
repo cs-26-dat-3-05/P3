@@ -1,4 +1,6 @@
-﻿import { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { CASES } from "./caseData";
+import type { CaseItem } from "./caseData";
 import {
   CaseName,
   CaseRow,
@@ -12,140 +14,6 @@ import {
   TableWrap,
 } from "./style";
 
-interface CaseItem {
-  id: string;
-  organizer: string;
-  amount: string;
-  status: string;
-  progress: number;
-  step: string;
-  note: string;
-  created: string;
-}
-
-const CASES: CaseItem[] = [
-  {
-    id: "RP-10XX",
-    organizer: "Aalborg Kommune",
-    amount: "DKK XX.XXX",
-    status: "Afventer",
-    progress: 4,
-    step: "Afventer korrekt kontonummer",
-    note: "Kontaktoplysninger kontrolleret",
-    created: "12. JUNI",
-  },
-  {
-    id: "RP-10XX",
-    organizer: "Musikkens Hus",
-    amount: "DKK XX.XXX",
-    status: "Afsluttet",
-    progress: 6,
-    step: "Udbetaling genindsendt",
-    note: "Reg.nr. verificeret",
-    created: "10. JUNI",
-  },
-  {
-    id: "RP-10XX",
-    organizer: "Studenterhuset Aalborg",
-    amount: "DKK XX.XXX",
-    status: "Kræver opmærksomhed",
-    progress: 2,
-    step: "Arrangør identificeret",
-    note: "Ring igen fredag",
-    created: "8. JUNI",
-  },
-  {
-    id: "RP-10XX",
-    organizer: "Nordjyllands Historiske Museum",
-    amount: "DKK XX.XXX",
-    status: "Ny",
-    progress: 1,
-    step: "Returnering registreret",
-    note: "—",
-    created: "18. JUNI",
-  },
-  {
-    id: "RP-10XX",
-    organizer: "Aalborg Teater",
-    amount: "DKK XX.XXX",
-    status: "Afventer",
-    progress: 3,
-    step: "Bilag afventer gennemgang",
-    note: "Mangler kvittering",
-    created: "17. JUNI",
-  },
-  {
-    id: "RP-10XX",
-    organizer: "Aalborg Symfoniorkester",
-    amount: "DKK XX.XXX",
-    status: "Under behandling",
-    progress: 5,
-    step: "Udbetaling klargjort",
-    note: "Beløb godkendt",
-    created: "16. JUNI",
-  },
-  {
-    id: "RP-10XX",
-    organizer: "Kulturhuset Trekanten",
-    amount: "DKK XX.XXX",
-    status: "Afventer",
-    progress: 4,
-    step: "Afventer svar fra arrangør",
-    note: "Mail sendt 15. juni",
-    created: "15. JUNI",
-  },
-  {
-    id: "RP-10XX",
-    organizer: "Børnekulturhuset",
-    amount: "DKK XX.XXX",
-    status: "Ny",
-    progress: 1,
-    step: "Sag modtaget",
-    note: "—",
-    created: "14. JUNI",
-  },
-  {
-    id: "RP-10XX",
-    organizer: "Aalborg Kongres & Kultur Center",
-    amount: "DKK XX.XXX",
-    status: "Afsluttet",
-    progress: 6,
-    step: "Udbetaling gennemført",
-    note: "Afstemt",
-    created: "13. JUNI",
-  },
-  {
-    id: "RP-10XX",
-    organizer: "Mikkel",
-    amount: "DKK 500.000.000",
-    status: "Under behandling",
-    progress: 3,
-    step: "Oplysninger gennemgå",
-    note: "Tue er Sej",
-    created: "11. JUNI",
-  },
-  {
-    id: "RP-10XX",
-    organizer: "Kunsten Museum of Modern Art",
-    amount: "DKK XX.XXX",
-    status: "Afventer",
-    progress: 2,
-    step: "Afventer dokumentation",
-    note: "Rykkes i næste uge",
-    created: "9. JUNI",
-  },
-  {
-    id: "RP-10XX",
-    organizer: "Aalborg Karneval",
-    amount: "DKK XX.XXX",
-    status: "Ny",
-    progress: 1,
-    step: "Sag modtaget",
-    note: "—",
-    created: "7. JUNI",
-  },
-];
-
 const WORKFLOW_STEPS = [
   "Sag modtaget",
   "Arrangør identificeret",
@@ -158,7 +26,7 @@ const WORKFLOW_STEPS = [
 const getOwner = (step: number) => (step <= 4 ? "Kundeservice" : "Bekræfter");
 
 type SagsoversigtProps = {
-  onOpenCase: () => void;
+  onOpenCase: (caseItem: CaseItem) => void;
 };
 
 export default function Sagsoversigt({ onOpenCase }: SagsoversigtProps) {
@@ -255,7 +123,7 @@ export default function Sagsoversigt({ onOpenCase }: SagsoversigtProps) {
               <CaseRow
                 key={`${item.organizer}-${index}`}
                 $attention={item.status === "Kræver opmærksomhed"}
-                onClick={onOpenCase}
+                onClick={() => onOpenCase(item)}
               >
                 <td>
                   <CaseName>

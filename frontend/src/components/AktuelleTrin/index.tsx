@@ -46,29 +46,31 @@ const MOCK_STEPS: Step[] = [
     }
 ];
 
-export default function AktuelleTrin() {
-    const currentStep = MOCK_STEPS.find((step) => step.status === "current");
+export default function AktuelleTrin({ step, progress }: { step: string; progress: number }) {
     const totalSteps = MOCK_STEPS.length;
     return (
         <Card>
             <StepHeader>
                 <div>
                     <HeaderLabel>AKTUELLE TRIN</HeaderLabel>
-                    <HeaderTitle>{currentStep?.title}</HeaderTitle>
+                    <HeaderTitle>{step}</HeaderTitle>
                 </div>
-                <span>TRIN {currentStep?.number} / {totalSteps}</span>
+                <span>TRIN {progress} / {totalSteps}</span>
             </StepHeader>
             
-            {MOCK_STEPS.map((step) => (
-                <StepRow key={step.number}>
-                    <StepCircle $status={step.status}>{step.status === "done" ? "✓" : step.number}</StepCircle>
-                    <StepText>
-                        <StepTitle $status={step.status}>{step.title}</StepTitle>
-                        <StepDescription>{step.description}</StepDescription>
-                    </StepText>
-                    <StepDate>{step.date}</StepDate>
-                </StepRow>
-            ))}
+            {MOCK_STEPS.map((item, index) => {
+                const status = index + 1 < progress ? "done" : index + 1 === progress ? "current" : "upcoming";
+                return (
+                    <StepRow key={item.number}>
+                        <StepCircle $status={status}>{status === "done" ? "✓" : item.number}</StepCircle>
+                        <StepText>
+                            <StepTitle $status={status}>{item.number === progress ? step : item.title}</StepTitle>
+                            <StepDescription>{item.description}</StepDescription>
+                        </StepText>
+                        <StepDate>{item.date}</StepDate>
+                    </StepRow>
+                );
+            })}
         </Card>
     );
 }

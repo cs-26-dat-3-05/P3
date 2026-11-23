@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import KpiCard from "./Card";
+import { CASES } from "../Sagsoversigt/caseData";
 
 const KpiRow = styled.div`
   display: grid;
@@ -8,14 +9,17 @@ const KpiRow = styled.div`
   margin-bottom: 24px;
 `;
 
+const countByStatus = (status: string) =>
+  CASES.filter((item) => item.status === status).length;
+
 export default function KpiCards() {
   return (
     <>
       <KpiRow>
-        <KpiCard label="aktive sager" count={12} />
-        <KpiCard label="afventer svar" count={5} />
-        <KpiCard label="afsluttede sager" count={3} />
-        <KpiCard label="kræver handling" count={2} highlighted />
+        <KpiCard label="aktive sager" count={CASES.length - countByStatus("Afsluttet")} />
+        <KpiCard label="afventer svar" count={countByStatus("Afventer")} />
+        <KpiCard label="afsluttede sager" count={countByStatus("Afsluttet")} />
+        <KpiCard label="kræver handling" count={countByStatus("Kræver opmærksomhed")} highlighted />
       </KpiRow>
     </>
   );
