@@ -1,9 +1,9 @@
-TRUNCATE Transaction, Organizer, User_Table, cases, case_log, Retransfer, notes RESTART IDENTITY CASCADE;
+TRUNCATE Transaction, Organizer, User_Table, cases, case_log, Retransfer, notes, bank_statement RESTART IDENTITY CASCADE;
 
-INSERT INTO Transaction(TransactionID, ULID, BookingDate, Amount, Currency, RemittanceText, CreatedAt) VALUES
-    (1, '01M6F3TCCKQXZW4M9TPK0VEHA1', '2026-09-30', 8372.85, 'DKK', 'Udbetaling Place2Book den 30. september 2026', '2026-09-30 09:00:00'),
-    (2, '01M6F44A7A5N59T2XPX66T0HT9', '2026-10-16', 24256.22, 'SEK', 'Udbetaling Place2Book den 16. oktober 2026', '2026-10-16 09:00:00'),
-    (3, '01M6F47ZAHJBHRE24HW0M0QSP1', '2026-11-01', 100000.22, 'DKK', 'Udbetaling Place2Book den 1. november 2026', '2026-11-01 09:00:00');
+INSERT INTO Transaction(ULID, BookingDate, Amount, Currency, RemittanceText, CreatedAt) VALUES
+    ('01M6F3TCCKQXZW4M9TPK0VEHA1', '2026-09-30', 8372.85, 'DKK', 'Udbetaling Place2Book den 30. september 2026', '2026-09-30 09:00:00'),
+    ('01M6F44A7A5N59T2XPX66T0HT9', '2026-10-16', 24256.22, 'SEK', 'Udbetaling Place2Book den 16. oktober 2026', '2026-10-16 09:00:00'),
+    ('01M6F47ZAHJBHRE24HW0M0QSP1', '2026-11-01', 100000.22, 'DKK', 'Udbetaling Place2Book den 1. november 2026', '2026-11-01 09:00:00');
 
 INSERT INTO Organizer(OrganizerID, Name, Email, Phone, RegistrationNumber, AccountNumber) VALUES
     ('1', 'Rekom Group a/s', 'info@rekom.dk', '45 33 29 03 00', '438205824291', '5802853291'),

@@ -47,6 +47,7 @@ class NoteRepositoryIT {
                 """).update();
         jdbc.sql("""
                 INSERT INTO Transaction (TransactionID, ULID, BookingDate, Amount, Currency, CreatedAt)
+                OVERRIDING SYSTEM VALUE
                 VALUES (900002, '01ITNOTEITNOTEITNOTEITNOTE', '2026-11-01', 100.00, 'DKK', '2026-11-01 09:00:00')
                 """).update();
         caseId = insertCase().getId();
