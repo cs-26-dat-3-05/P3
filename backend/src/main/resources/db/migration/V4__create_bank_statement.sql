@@ -9,7 +9,7 @@ CREATE TABLE bank_statement(
 
 ALTER TABLE Transaction
     ADD COLUMN bank_statement_id BIGINT NULL REFERENCES bank_statement(id);
-    
+
 ALTER TABLE Transaction
     ALTER COLUMN TransactionID ADD GENERATED ALWAYS AS IDENTITY;
 
