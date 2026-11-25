@@ -8,6 +8,10 @@ spring:
   mvc:
     problemdetails:
       enabled: true
+  http: 
+    clients:
+      connect-timeout: 5s
+      read-timeout: 60s
 
   # The system's own database
   datasource:

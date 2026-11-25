@@ -108,6 +108,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Autoconfigured RestClient.builder object gets created with this dependency -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-restclient</artifactId>
+            <version>4.0.5</version>
+        </dependency>
     </dependencies>
 
     <build>
