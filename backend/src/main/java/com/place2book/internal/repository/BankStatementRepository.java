@@ -1,5 +1,6 @@
 package com.place2book.internal.repository;
 import com.place2book.internal.model.BankStatement;
+import com.place2book.internal.model.Transaction;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
