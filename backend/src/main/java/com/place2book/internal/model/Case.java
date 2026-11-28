@@ -27,7 +27,6 @@ public class Case {
         this.rejectedAccountNumber = rejectedAccountNumber;
         this.amount = amount;
         this.createdAt = createdAt;
-
     }
 
     public Case() {}

@@ -9,11 +9,23 @@ public class Mail {
     private String body;
     private String recipient; // mail recipient
     private LocalDateTime sentAt;
-
+    private status mailStatus;
+    public enum status {
+        FAIL,
+        SUCCESS
+    }    
     public Mail() {
 
     }
 
+    public status getMailStatus() {
+        return mailStatus;
+    }
+    
+    public void setMailStatus(status status) {
+        this.mailStatus = status;
+    }
+    
     public Long getId() {
         return id;
     }
